@@ -1,0 +1,3 @@
+# SpotyRate
+
+Hello
