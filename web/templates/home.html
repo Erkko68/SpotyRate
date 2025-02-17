@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpotyRate</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <div class="container vertical">
+        <!-- Header container -->
+        <div class="header" style="height: 8%;">
+            <header class="home-header">
+                <h1>SpotyRate</h1>
+                <img class="spotify-logo" src="{% static 'svg/Primary_Logo_White_CMYK.svg' %}" alt="SpotyRate Logo">
+            </header>
+        </div>
+        <!-- Slogan container -->
+        <div class="section" style="height: 12%;">
+            <header class="home-header">
+                <h2>Rate, Share, Discover: See What Your Friends Love on Spotify</h2>
+            </header>
+        </div>
+        <!-- Content container -->
+        <div class="section" style="height: 70%">
+            <div class="container horizontal">
+                <div class="info-card" style="width: 20%;">
+                    <img src="https://picsum.photos/400" alt="Card Image">
+                    <h3>Rate a Song</h3>
+                    <p>Share your thoughts and give ratings to your favorite songs and playlists. Let your friends know what you love or what you think could be better!</p>
+                </div>
+                <div class="info-card" style="width: 20%;">
+                    <img src="https://picsum.photos/220" alt="Card Image">
+                    <h3>Share with Friends</h3>
+                    <p>Discover what your friends are listening to and easily share your favorite tracks or playlists with them. Spread the music you love!</p>
+                </div>
+                <div class="info-card" style="width: 20%;">
+                    <img src="https://picsum.photos/230" alt="Card Image">
+                    <h3>Discover New Music</h3>
+                    <p>Explore new playlists, albums, and songs based on ratings and comments from your friends. Find hidden gems that you might not have come across on your own!</p>
+                </div>
+                <div class="info-card vertical" style="width: 40%;">
+                    <div class="section">
+                        <h3>Rate and Share with Friends</h3>
+                    </div>
+                    <div class="section">
+                        <a href="{% url 'spotify_login' %}">Login with Spotify</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer container -->
+        <div class="footer" style="height: 10%;">
+        </div>
+    </div>
+</body>
+</html>

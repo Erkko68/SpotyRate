@@ -1,0 +1,10 @@
+/* main.css */
+@import url('style.css');  /* Import default styles */
+
+/* Import component-specific styles */
+@import url('vars.css');
+@import url('fonts.css');
+@import url('layout/containers.css');
+@import url('layout/home.css');
+@import url('buttons/buttons.css');
+@import url('images.css');

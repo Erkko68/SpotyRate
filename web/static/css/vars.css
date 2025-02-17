@@ -1,0 +1,14 @@
+/* vars.css */
+
+/* Fonts */
+:root {
+    --font-primary: 'Helvetica Neue', sans-serif;
+    --font-secondary: 'Arial', sans-serif;
+}
+
+/* Color Palette */
+:root {
+    --green: #1ED760;
+    --black: #121212;
+    --white: #FFFFFF;
+}
