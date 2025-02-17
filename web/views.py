@@ -1,4 +1,6 @@
 import requests
+import os
+import dotenv
 from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -7,9 +9,12 @@ from .models import SpotifyUser
 
 # This file contains the api requests from spotify and the internal server.
 
-# Credentials
-SPOTIFY_CLIENT_ID = "98be932aeb274195a2e1720ec33cbd47"
-SPOTIFY_CLIENT_SECRET = "21ffcb62631a4c58b5314725a108d5f4"
+# Load environment variables from .env
+dotenv.load_dotenv()
+
+# Access the variables
+SPOTIFY_CLIENT_ID = os.getenv("CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 SPOTIFY_REDIRECT_URI = "http://127.0.0.1:8000/callback/"
 SPOTIFY_SCOPES = "user-read-private user-read-email"
 
