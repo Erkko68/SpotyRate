@@ -12,14 +12,6 @@ body {
     text-align: center;
 }
 
-/* General Header Styling */
-.home-header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Align items to the left */
-}
-
 /* SpotyRate name*/
 .home-header h1 {
     font-weight: bold;
