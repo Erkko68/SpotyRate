@@ -1,31 +1,11 @@
 /* Containers style for the home page*/
 
-/* Header Style with the SpotyRate name and Spotify Logo */
-.header {
-    display: flex;
-    background-color: var(--black);
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-/* Footer Style*/
-.footer {
-    display: flex;
-    background-color: var(--black);
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-
 /* Individual card */
 .info-card {
     background-color: var(--black);
     color: var(--white);
     padding: 2%;
     border-radius: 4%;
-    width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
