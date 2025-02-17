@@ -1,0 +1,52 @@
+/* fonts.css */
+
+/* Base global font */
+html {
+    font-size: 16px;
+}
+
+/* General Text Styling for body */
+body {
+    font-family: var(--font-primary);
+    color: var(--white);
+    text-align: center;
+}
+
+/* General Header Styling */
+.home-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the left */
+}
+
+/* SpotyRate name*/
+.home-header h1 {
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    font-size: 200%;
+    padding: 1%;
+}
+
+/* Slogan */
+.home-header h2 {
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    font-size: 3rem;
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Paragraph */
+.info-card p {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* Title */
+.info-card h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}

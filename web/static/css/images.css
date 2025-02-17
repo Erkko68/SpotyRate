@@ -1,0 +1,15 @@
+/* images.css */
+
+/* Spotify Logo SVG Styling */
+.spotify-logo {
+    width: auto;
+    height: 3rem;
+}
+
+/* Card Image */
+.info-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5%;
+    margin-bottom: 6%;
+}

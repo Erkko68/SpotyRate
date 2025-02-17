@@ -1,0 +1,35 @@
+/* Global container to structure layout */
+.global-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh; /* Full screen height */
+}
+
+/* Header container */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 10vh; /* 30% of the viewport height */
+}
+
+/* Main content container */
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 80vh; /* 50% of the viewport height */
+}
+
+/* Footer container */
+.footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 10vh; /* 20% of the viewport height */
+}
