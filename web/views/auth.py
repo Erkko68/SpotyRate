@@ -1,21 +1,18 @@
-import requests
 import os
+import requests
 import dotenv
 from django.shortcuts import redirect
-from django.http import JsonResponse
-from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import logout
-from .models import SpotifyUser
-
-# This file contains the api requests from spotify and the internal server.
+from ..models import SpotifyUser  # Import from parent directory
 
 # Load environment variables from .env
 dotenv.load_dotenv()
 
-# Access the variables
 SPOTIFY_CLIENT_ID = os.getenv("CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 SPOTIFY_REDIRECT_URI = "http://127.0.0.1:8000/callback/"
+SPOTIFY_LOGOUT_URL = "https://accounts.spotify.com/en/logout"
 SPOTIFY_SCOPES = "user-read-private user-read-email"
 
 def spotify_login(request):
@@ -28,18 +25,12 @@ def spotify_login(request):
     )
     return redirect(auth_url)
 
-'''
-Callback is a api request that grabs the authentication code from Spotify
-Its specified in the Spotify Api as the callback request after the user
-performs the login.
-'''
 def spotify_callback(request):
     code = request.GET.get("code")
 
     if not code:
         return JsonResponse({"error": "Authorization code not provided"}, status=400)
 
-    # Exchange code for token
     token_url = "https://accounts.spotify.com/api/token"
     payload = {
         "grant_type": "authorization_code",
@@ -76,21 +67,14 @@ def spotify_callback(request):
     else:
         return redirect("/login/")
 
-def get_spotify_user(request):
-    access_token = request.session.get("spotify_access_token")
+def spotify_logout(request):
+    """
+    Logs out the user from Django.
+    """
+    logout(request)  # Ends the Django authentication session
+    request.session.flush()  # Clears all session data
+    return redirect('/logout/') # Redirect to logout page
 
-    if not access_token:
-        return JsonResponse({"error": "User not authenticated"}, status=401)
-
-    headers = {"Authorization": f"Bearer {access_token}"}
-    response = requests.get("https://api.spotify.com/v1/me", headers=headers)
-    return JsonResponse(response.json())
-
-'''
-Refreshes the authorization code from the user, since Spotify authorization code
-only lasts for one hour we have to automatically request a a refresh in case an user
-is more than that time in the app.
-'''
 def refresh_spotify_token(request):
     refresh_token = request.session.get("spotify_refresh_token")
 
@@ -113,15 +97,3 @@ def refresh_spotify_token(request):
         return JsonResponse({"access_token": token_data["access_token"]})
     else:
         return JsonResponse(token_data, status=400)
-
-
-# Render Requests for the main pages
-def dashboard(request):
-    return render(request, "dashboard.html")
-def home(request):
-    return render(request,"home.html")
-
-def logout_view(request):
-    logout(request)  # Ends Django session
-    request.session.flush()  # Clears all session data
-    return redirect("/")  # Redirect to home after logging out
