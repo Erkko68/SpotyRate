@@ -9,8 +9,14 @@
     box-sizing: border-box;
 }
 
-html, body {
+html {
     font-family: var(--font-primary);
     background: linear-gradient(rgb(60, 60, 60) 0%, rgb(0, 0, 0) 100%);
     overflow: auto;  /* Enable scroll if content overflows */
+}
+
+body {
+    display: flex;
+    flex-direction: column;  /* Default flex direction (vertical) for the main sections */
+    height: 100vh;  /* Ensure container takes up at least the full height */
 }
