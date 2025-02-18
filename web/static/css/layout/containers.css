@@ -1,13 +1,4 @@
 /* ----------------------------- */
-/* General Container Styles */
-/* ----------------------------- */
-.container {
-    display: flex;
-    flex-direction: column;  /* Default flex direction (vertical) for the main sections */
-    height: 100vh;  /* Ensure container takes up at least the full height */
-}
-
-/* ----------------------------- */
 /* Section Styling (for both vertical and horizontal layouts) */
 /* ----------------------------- */
 .section {
@@ -15,6 +6,8 @@
     justify-content: center;  /* Center content horizontally */
     align-items: center;      /* Center content vertically */
     box-sizing: border-box;
+    height: 100%;
+    width: 100%;
     flex-grow: 1;  /* Allow sections to grow and take available space */
     flex-shrink: 1; /* Allow sections to shrink if needed */
 }
@@ -30,25 +23,37 @@
 }
 
 /* Vertical layout: sections stacked vertically */
-.layout.vertical {
+.column {
+    display: flex;
     flex-direction: column;  /* Align nested sections vertically */
+    width: 100%;  /* Full width of parent container */
+    height: 100%;  /* Full width of parent container */
 }
 
 /* Horizontal layout: sections arranged horizontally */
-.layout.horizontal {
+.row {
+    display: flex;
     flex-direction: row;  /* Align nested sections horizontally */
+    width: 100%;  /* Full width of parent container */
+    height: 100%;  /* Full width of parent container */
 }
 
 /* Vertical layout specific section styling */
-.layout.vertical .section {
+.column .section {
     flex-basis: calc(var(--size, 20) * 1%);  /* Custom height using % (default 20%) */
     flex-grow: 1;  /* Allow sections to grow if there's extra space */
     flex-shrink: 1; /* Allow sections to shrink if needed */
 }
 
 /* Horizontal layout specific section styling */
-.layout.horizontal .section {
+.row .section {
     flex-basis: calc(var(--size, 20) * 1%);  /* Custom width using % (default 20%) */
     flex-grow: 1;  /* Allow sections to grow if there's extra space */
     flex-shrink: 1; /* Allow sections to shrink if needed */
+}
+
+@media (max-width: 800px) {
+    .row {
+        flex-direction: column;  /* Switch to vertical layout */
+    }
 }
