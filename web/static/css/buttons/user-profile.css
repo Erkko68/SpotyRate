@@ -1,0 +1,25 @@
+.spotify-user {
+    text-align: center;
+}
+
+.spotify-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.spotify-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #1DB954;
+}
+
+.spotify-info {
+    display: none;
+    background: #222;
+    padding: 10px;
+    margin-top: 10px;
+    color: white;
+    text-align: left;
+}

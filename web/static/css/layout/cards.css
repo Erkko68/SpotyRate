@@ -1,0 +1,59 @@
+
+
+/* Individual card */
+.info-card {
+    background-color: var(--black);
+    color: var(--white);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease-in-out;
+
+    margin: 20px; /* Space from the parent */
+    padding: 30px;  /* Inner Spacing */
+    border-radius: 16px; /* Rounded edges */
+
+    width: calc(100%); /* Adjust width to fit parent with margin */
+    height: calc(100% - 30px); /* Adjust height to fit parent with margin */
+
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.info-card:hover {
+    background-color: color-mix(in srgb, var(--black) 95%, var(--white) 5%);
+    transform: scale(1.02);
+    transition: background-color 0.2s, transform 0.2s ease-in-out;
+}
+
+/* Card Image */
+.info-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5%;
+    margin-bottom: 6%;
+}
+
+/* Card for each dashboard section */
+.section-card {
+    width: calc(100% - 20px); /* Adjust width to fit parent with margin */
+    height: calc(100% - 20px); /* Adjust height to fit parent with margin */
+    margin: 10px; /* Space from the parent */
+    border-radius: 16px; /* Rounded edges */
+    background: var(--black); /* Dark theme like Spotify */
+    color: var(--white); /* White text for contrast */
+    padding: 20px; /* Inner spacing */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* */
+.header {
+    width: 100%; /* Adjust width to fit parent with margin */
+    height: 100%; /* Adjust height to fit parent with margin */
+    margin: 10px; /* Space from the parent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

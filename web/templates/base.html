@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SpotyRate{% endblock %}</title>
+    {% load static %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'images/svg/Primary_Logo_White_CMYK.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <div class="column">
+        <!-- Header Section -->
+        <div class="section" style="--size: 7; background-color: var(--black)">
+            {% include "./elements/logo.html" %}
+        </div>
+        <!-- Content -->
+        <div class="section" style="--size: 90; justify-content: left; text-align: left; flex-direction: column">
+            <div class="row">
+                <!-- Left Section -->
+                <div class="section" style="--size:25;">
+                    {% block left %}{% endblock %}
+                </div>
+                <!-- Middle Section -->
+                <div class="section" style="--size:50;">
+                    {% block middle %}{% endblock %}
+                </div>
+                <!-- Right Section -->
+                <div class="section" style="--size:20;">
+                    {% block right %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        <!-- No footer :( -->
+    </div>
+
+    {% block scripts %}{% endblock %}
+    <script src="{% static 'js/user_profile.js' %}" defer></script>
+</body>
+</html>

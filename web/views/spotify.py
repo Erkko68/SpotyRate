@@ -3,12 +3,11 @@ import requests
 import dotenv
 from django.http import JsonResponse
 from django.shortcuts import redirect
+from django.conf import settings
 
-# Load environment variables
-dotenv.load_dotenv()
-
-SPOTIFY_CLIENT_ID = os.getenv("CLIENT_ID")
-SPOTIFY_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+SPOTIFY_CLIENT_SECRET = settings.SPOTIFY_CLIENT_SECRET
+SPOTIFY_CLIENT_ID = settings.SPOTIFY_CLIENT_ID
+SPOTIFY_REDIRECT_URI = settings.SPOTIFY_REDIRECT_URI
 
 def get_spotify_user(request):
     access_token = request.session.get("spotify_access_token")

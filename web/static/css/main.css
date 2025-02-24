@@ -4,7 +4,8 @@
 /* Import component-specific styles */
 @import url('vars.css');
 @import url('fonts.css');
-@import url('layout/containers.css');
-@import url('layout/info-card.css');
+@import url('layout/grid.css');
+@import url('layout/cards.css');
 @import url('buttons/buttons.css');
+@import url('buttons/user-profile.css');
 @import url('images.css');
