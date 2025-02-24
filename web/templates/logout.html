@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpotyRate | Logging out...</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-</head>
-<body>
-    <h1>Logging you out...</h1>
+{% extends "base.html" %}
 
+{% block title %}SpotyRate | Logging out...{% endblock %}
+
+{% block middle %}
+    <h1>Logging you out...</h1>
+{% endblock %}
+
+{% block scripts %}
     <script>
         // Create an invisible iframe to execute the logout
         const iframe = document.createElement('iframe');
@@ -32,5 +29,4 @@
             window.location.href = '/';  // Redirect to the homepage
         }, 2000);
     </script>
-</body>
-</html>
+{% endblock %}
