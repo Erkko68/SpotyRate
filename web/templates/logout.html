@@ -14,8 +14,8 @@
         // Create an invisible iframe to execute the logout
         const iframe = document.createElement('iframe');
 
-        // Set the iframe source to the external logout URL (Spotify in this case)
-        iframe.src = 'https://accounts.spotify.com/en/logout';  // Replace with your logout URL if needed
+        // Set the iframe source to the external logout URL
+        iframe.src = 'https://accounts.spotify.com/en/logout';
         iframe.style.width = '0';
         iframe.style.height = '0';
         iframe.style.border = 'none';
@@ -29,7 +29,7 @@
         // After 2 seconds, remove the iframe and redirect the user
         setTimeout(function() {
             iframe.remove();  // Remove the iframe from the DOM
-            window.location.href = '/';  // Redirect to the homepage (or any other page)
+            window.location.href = '/';  // Redirect to the homepage
         }, 2000);
     </script>
 </body>
