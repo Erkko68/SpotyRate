@@ -73,7 +73,7 @@ def spotify_logout(request):
     """
     logout(request)  # Ends the Django authentication session
     request.session.flush()  # Clears all session data
-    return redirect('/logout/') # Redirect to logout page
+    return redirect('/logout/') # Redirect to log out page
 
 def refresh_spotify_token(request):
     refresh_token = request.session.get("spotify_refresh_token")
