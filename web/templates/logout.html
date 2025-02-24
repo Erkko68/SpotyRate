@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpotyRate | Logging out...</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <h1>Logging you out...</h1>
+
+    <script>
+        // Create an invisible iframe to execute the logout
+        const iframe = document.createElement('iframe');
+
+        // Set the iframe source to the external logout URL (Spotify in this case)
+        iframe.src = 'https://accounts.spotify.com/en/logout';  // Replace with your logout URL if needed
+        iframe.style.width = '0';
+        iframe.style.height = '0';
+        iframe.style.border = 'none';
+        iframe.style.position = 'absolute';
+        iframe.style.top = '0';
+        iframe.style.left = '0';
+
+        // Append the iframe to the body (it will be invisible)
+        document.body.appendChild(iframe);
+
+        // After 2 seconds, remove the iframe and redirect the user
+        setTimeout(function() {
+            iframe.remove();  // Remove the iframe from the DOM
+            window.location.href = '/';  // Redirect to the homepage (or any other page)
+        }, 2000);
+    </script>
+</body>
+</html>

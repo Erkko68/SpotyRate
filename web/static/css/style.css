@@ -1,16 +1,22 @@
 /* style.css */
 
-/* Global box-sizing */
+/* ----------------------------- */
+/* General Reset and Base Styles */
+/* ----------------------------- */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-/* Base Styles */
-body {
+html {
     font-family: var(--font-primary);
     background: linear-gradient(rgb(60, 60, 60) 0%, rgb(0, 0, 0) 100%);
-    height: 100vh;
-    overflow: hidden;
+    overflow: auto;  /* Enable scroll if content overflows */
+}
+
+body {
+    display: flex;
+    flex-direction: column;  /* Default flex direction (vertical) for the main sections */
+    height: 100vh;  /* Ensure container takes up at least the full height */
 }

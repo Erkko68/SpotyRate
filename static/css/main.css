@@ -1,9 +1,0 @@
-/* main.css */
-@import url('style.css');  /* Import default styles */
-
-/* Import component-specific styles */
-@import url('headers.css');
-@import url('text.css');
-@import url('containers.css');
-@import url('buttons.css');
-@import url('images.css');

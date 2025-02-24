@@ -1,15 +1,18 @@
 from django.urls import path
 from . import views
-from .views import spotify_callback, spotify_profile
 
 urlpatterns = [
-    path("", views.home, name="home"),
+    # Authentication
     path("login/", views.spotify_login, name="spotify_login"),
     path("callback/", views.spotify_callback, name="spotify_callback"),
-    path("user/", views.get_spotify_user, name="spotify_user"),
+    path("logout/", views.logout, name="logout"),
     path("refresh/", views.refresh_spotify_token, name="spotify_refresh"),
+
+    # Pages
+    path("", views.home, name="home"),
     path("dashboard/", views.dashboard, name="dashboard"),
-    path('logout/', views.logout_view, name='logout'),
-    path("callback/", spotify_callback, name="spotify_callback"),
-    path("profile/", spotify_profile, name="spotify_profile"),
+
+    # Api Data Requests
+    path("user/", views.get_spotify_user, name="spotify_user"),
+
 ]
