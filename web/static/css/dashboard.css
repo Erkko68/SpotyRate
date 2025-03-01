@@ -1,0 +1,149 @@
+/* CSS styles */
+
+html, body {
+    font-family: 'Helvetica Neue', sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+.parent {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: auto repeat(4, 1fr);
+    gap: 2px;
+    background-color: black;
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+
+.header {
+    grid-column: span 5 / span 5;
+    background-color: #121212;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 20px;
+    height: 75px;
+}
+
+.header_title {
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.spotify-logo {
+    height: 30px;
+    margin-left: 10px;
+}
+
+.top_S {
+    grid-row: span 4 / span 4;
+    grid-row-start: 2;
+    background-color: #212121;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border-radius: 8px;
+    margin-left: 2px;
+}
+
+.top_S_header {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.main {
+    background-color: #212121;
+    grid-column: span 3 / span 3;
+    grid-row: span 4 / span 4;
+    grid-row-start: 2;
+    border-radius: 8px;
+}
+
+.ER_text{
+    text-align: left;
+    padding-left: 20px;
+    color: white;
+    font-size: 24px;
+}
+
+.recomendaciones_text{
+    color: white;
+    padding-left: 20px;
+    padding-top: 160px;
+    font-size: 24px;
+}
+
+.friends {
+    grid-row: span 4 / span 4;
+    grid-column-start: 5;
+    grid-row-start: 2;
+    background-color: #212121;
+    text-align: center;
+    border-radius: 8px;
+    margin-right: 2px;
+}
+
+.friends_header{
+    color: white;
+    font-size: 24px;
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    position: relative;
+    max-width: 300px;
+    background-color: #111;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+.input {
+    width: 100%;
+    max-width: 300px;
+    height: 45px;
+    padding-left: 2.5rem;
+    box-shadow: 0 0 0 1.5px #2b2c37, 0 0 25px -17px #000;
+    border: 0;
+    border-radius: 12px;
+    background-color:#535353;
+    outline: none;
+    color: #bdbecb;
+    transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+    cursor: text;
+    z-index: 0;
+}
+
+.input::placeholder {
+    color: #bdbecb;
+}
+
+.input:hover {
+    box-shadow: 0 0 0 2.5px #2f303d, 0px 0px 25px -15px #000;
+}
+
+.input:active {
+    transform: scale(0.95);
+}
+
+.input:focus {
+    box-shadow: 0 0 0 2.5px #535353;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    fill: #bdbecb;
+    width: 1rem;
+    height: 1rem;
+    pointer-events: none;
+    z-index: 1;
+}

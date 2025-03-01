@@ -12,7 +12,9 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("dashboard/", views.dashboard, name="dashboard"),
 
+    path("profile/", views.profile, name="profile"),
+
     # Api Data Requests
-    path("user/", views.get_spotify_user, name="spotify_user"),
+    path("user/", views.get_spotify_user, name="spotify_user")
 
 ]

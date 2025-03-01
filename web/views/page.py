@@ -12,3 +12,6 @@ def logout(request):
     spotify_logout(request)
     # Render logout temporary page
     return render(request, "logout.html")
+
+def profile(request):
+    return render(request, "profile.html")
