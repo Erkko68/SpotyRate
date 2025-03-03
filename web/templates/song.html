@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpotyRate-Song</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+
+ <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .player-container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            width: 500px;
+            text-align: center;
+        }
+        .cover img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .song-info {
+            margin-top: 15px;
+        }
+        .song-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .artist {
+            color: #b3b3b3;
+        }
+        .play-button {
+            margin-top: 20px;
+        }
+        .play-button button {
+            background: #1db954;
+            border: none;
+            padding: 15px 25px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <div class="cover">
+            <img src="cover.jpg" alt="Portada de la canción">
+        </div>
+        <div class="song-info">
+            <div class="song-title">Si Antes Te Hubiera Conocido</div>
+            <div class="artist">Karol G</div>
+            <div class="song-details">2024 • 3:15 • 1,011,023,742 reproducciones</div>
+        </div>
+        <div class="play-button">
+            <button>▶ Reproducir</button>
+        </div>
+    </div>
+</body>
+
+</html>
