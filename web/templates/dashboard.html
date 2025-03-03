@@ -1,31 +1,57 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}SpotyRate | Dashboard{% endblock %}
 
-{% block left %}
-    <div class="column">
-        <div class="section-card">
-        </div>
-        <button onclick="logout()">Logout</button>
+{% block header %}
+    <div class="section" style="--size: 15">
+        {% include "elements/logo.html" %}
+    </div>
+    <div class="section" style="--size: 85">
+        {% include "elements/pfp.html" %}
     </div>
 {% endblock %}
 
-{% block middle %}
-    <div class="column">
-        <div class="section-card">
-            {% include "elements/playlist.html" %}
+{% block content %}
+    <div class="section" style="--size: 90; justify-content: left; text-align: left; flex-direction: column">
+        <div class="row">
+            <!-- Left Section -->
+            <div class="section" style="--size:25;">
+                <div class="column">
+                    <div class="section-card">
+                    </div>
+                    <button onclick="logout()">Logout</button>
+                </div>
+            </div>
+            <!-- Middle Section -->
+            <div class="section" style="--size:50;">
+                <div class="column">
+                    <div class="section-card">
+                        {% if active_page == 'playlist' %}
+                            {% include "elements/playlist.html" %}
+                        {% elif active_page == 'song' %}
+                            {% include "elements/song.html" %}
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            <!-- Right Section -->
+            <div class="section" style="--size:25;">
+                <div class="column">
+                    <div class="section-card">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
 
-{% block right %}
-    <div class="column">
-        <div class="section-card">
-        </div>
-    </div>
-{% endblock %}
+{% block footer %}{% endblock %}
+
 
 {% block scripts %}
+    <script src="{% static 'js/user_profile.js' %}" defer></script>
     <script>
         // Fetch user data
         fetch("/user/")
