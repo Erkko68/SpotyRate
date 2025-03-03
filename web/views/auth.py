@@ -1,17 +1,16 @@
+import os
 import requests
-from django.conf import settings
-from django.contrib.auth import logout
-from django.http import JsonResponse
+import dotenv
 from django.shortcuts import redirect
-
-from ..models import SpotifyUser
+from django.http import JsonResponse, HttpResponse
+from django.contrib.auth import logout
+from ..models import SpotifyUser  # Import from parent directory
 
 # Load environment variables from .env
-
-SPOTIFY_CLIENT_SECRET = settings.SPOTIFY_CLIENT_SECRET
-SPOTIFY_CLIENT_ID = settings.SPOTIFY_CLIENT_ID
-SPOTIFY_REDIRECT_URI = settings.SPOTIFY_REDIRECT_URI
-
+dotenv.load_dotenv()
+SPOTIFY_CLIENT_ID = os.getenv("CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+SPOTIFY_REDIRECT_URI = "http://127.0.0.1:8000/callback/"
 SPOTIFY_LOGOUT_URL = "https://accounts.spotify.com/en/logout"
 SPOTIFY_SCOPES = "user-read-private user-read-email"
 
