@@ -1,8 +1,21 @@
 # SpotyRate
 
-Hello
+## Introduction
+bla bla bla
 
-Prova 1
+### Features
+ - API Spotify
+ - 
+### Usage (How to deploy)
 
-Abril
+Crear gmail
+email:
+contrasenya:
 
+## CODE
+
+### Models.py
+
+### Auth.py
+
+### Front-end
