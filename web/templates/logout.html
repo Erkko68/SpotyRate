@@ -2,8 +2,21 @@
 
 {% block title %}SpotyRate | Logging out...{% endblock %}
 
-{% block middle %}
-    <h1>Logging you out...</h1>
+
+{% block header %}
+    <div class="section" style="--size: 15">
+        {% include "elements/logo.html" %}
+    </div>
+    <div class="section" style="--size: 85"></div>
+{% endblock %}
+
+{% block content %}
+    <div class="section" style="--size: 90; justify-content: left; text-align: left; flex-direction: column">
+        <h1>Logging you out...</h1>
+    </div>
+{% endblock %}
+
+{% block footer %}
 {% endblock %}
 
 {% block scripts %}

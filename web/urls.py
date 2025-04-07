@@ -11,6 +11,8 @@ urlpatterns = [
     # Pages
     path("", views.home, name="home"),
     path("dashboard/", views.dashboard, name="dashboard"),
+    path("dashboard/song", views.dashboard_song, name="dashboard"),
+    path("dashboard/playlist", views.dashboard_playlist, name="dashboard"),
 
     # Api Data Requests
     path("user/", views.get_spotify_user, name="spotify_user"),

@@ -11,30 +11,15 @@
 <body>
     <div class="column">
         <!-- Header Section -->
-        <div class="section" style="--size: 7; background-color: var(--black)">
-            {% include "elements/logo.html" %}
+        <div class="section" style="--size: 10; background-color: var(--black)">
+            {% block header %}{% endblock %}
         </div>
         <!-- Content -->
-        <div class="section" style="--size: 90; justify-content: left; text-align: left; flex-direction: column">
-            <div class="row">
-                <!-- Left Section -->
-                <div class="section" style="--size:25;">
-                    {% block left %}{% endblock %}
-                </div>
-                <!-- Middle Section -->
-                <div class="section" style="--size:50;">
-                    {% block middle %}{% endblock %}
-                </div>
-                <!-- Right Section -->
-                <div class="section" style="--size:20;">
-                    {% block right %}{% endblock %}
-                </div>
-            </div>
-        </div>
-        <!-- No footer :( -->
+        {% block content %}{% endblock %}
+        <!-- Footer -->
+        {% block footer %}{% endblock %}
     </div>
 
     {% block scripts %}{% endblock %}
-    <script src="{% static 'js/user_profile.js' %}" defer></script>
 </body>
 </html>

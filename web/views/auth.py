@@ -2,9 +2,9 @@ import os
 import requests
 import dotenv
 from django.shortcuts import redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.contrib.auth import logout
-from ..models import SpotifyUser  # Import from parent directory
+from ..models import User  # Import the updated User model
 
 # Load environment variables from .env
 dotenv.load_dotenv()
@@ -25,13 +25,12 @@ def spotify_login(request):
     return redirect(auth_url)
 
 def spotify_callback(request):
-    """Handle the Spotify OAuth2 callback."""
+    """Handle the Spotify OAuth2 callback and store user information."""
     code = request.GET.get("code")
-
     if not code:
         return JsonResponse({"error": "Authorization code not provided"}, status=400)
 
-    # URL de Spotify para obtener el token
+    # Request access token
     token_url = "https://accounts.spotify.com/api/token"
     payload = {
         "grant_type": "authorization_code",
@@ -40,58 +39,48 @@ def spotify_callback(request):
         "client_id": SPOTIFY_CLIENT_ID,
         "client_secret": SPOTIFY_CLIENT_SECRET,
     }
-
     response = requests.post(token_url, data=payload)
     token_data = response.json()
 
-    if "access_token" in token_data:
-        access_token = token_data["access_token"]
-        refresh_token = token_data.get("refresh_token")
-
-        # Obtener los datos del usuario desde Spotify
-        headers = {"Authorization": f"Bearer {access_token}"}
-        user_data = requests.get("https://api.spotify.com/v1/me", headers=headers).json()
-
-        # Obtener Spotify ID, nombre y correo del usuario
-        spotify_id = user_data["id"]
-        display_name = user_data.get("display_name", "Unknown")
-        email = user_data.get("email", "")  # Obtener el correo electrónico
-
-        # Obtener la URL de la imagen de perfil (si está disponible)
-        images = user_data.get("images", [])
-        profile_image_url = images[0].get("url", "") if images else ""
-
-        # Almacenar en la base de datos (si el usuario no existe, se crea)
-        user, created = SpotifyUser.objects.get_or_create(
-            spotify_id=spotify_id,
-            defaults={
-                "display_name": display_name,
-                "email": email,
-                "profile_image_url": profile_image_url,
-            }
-        )
-
-        # Guardar los tokens en la sesión
-        request.session["spotify_access_token"] = access_token
-        request.session["spotify_refresh_token"] = refresh_token
-
-        # Redirigir al dashboard
-        return redirect("/dashboard/")
-
-    else:
+    if "access_token" not in token_data:
         return JsonResponse({"error": "Failed to retrieve access token"}, status=400)
 
+    access_token = token_data["access_token"]
+    refresh_token = token_data.get("refresh_token", "")
+
+    # Retrieve user data from Spotify API
+    headers = {"Authorization": f"Bearer {access_token}"}
+    user_data = requests.get("https://api.spotify.com/v1/me", headers=headers).json()
+
+    spotify_id = user_data["id"]
+    display_name = user_data.get("display_name", "Unknown")
+    email = user_data.get("email", "")  # Ensure email is retrieved
+    images = user_data.get("images", [])
+    profile_image_url = images[0]["url"] if images else ""  # Ensure image is retrieved
+
+    # Ensure user is updated correctly
+    user, created = User.objects.get_or_create(spotify_id=spotify_id)
+
+    # Update fields explicitly
+    user.display_name = display_name
+    user.email = email
+    user.profile_image_url = profile_image_url
+    user.save()  # Save the updated user details
+
+    # Save tokens in session
+    request.session["spotify_access_token"] = access_token
+    request.session["spotify_refresh_token"] = refresh_token
+
+    return redirect("/dashboard/")
+
 def spotify_logout(request):
-    """
-    Logs out the user from Django.
-    """
-    logout(request)  # Ends the Django authentication session
-    request.session.flush()  # Clears all session data
-    return redirect('/logout/') # Redirect to log out page
+    """Logs out the user from Django and clears the session."""
+    logout(request)
+    request.session.flush()
+    return redirect('/logout/')
 
 def refresh_spotify_token(request):
     refresh_token = request.session.get("spotify_refresh_token")
-
     if not refresh_token:
         return JsonResponse({"error": "No refresh token found"}, status=400)
 
