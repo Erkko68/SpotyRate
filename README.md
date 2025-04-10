@@ -10,9 +10,9 @@
 - System of authentication and registration of users.
 ### Usage (How to deploy)
 
-Crear gmail
-email:
-contrasenya:
+email: spotyratedemo@gmail.com
+
+contrasenya: WebProject2025
 
 ## CODE
 
