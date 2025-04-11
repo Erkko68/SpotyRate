@@ -8,6 +8,7 @@
 - Own system of ratings and comments for songs and playlists.
 - Management of personal playlists within SpotyRate.
 - System of authentication and registration of users.
+  
 ### Usage (How to deploy)
 
 This project integrates with the Spotify API for user authentication. To make the evaluation process easier for teachers, we have set up a demo Spotify account that bypasses the need to log in with a personal Spotify account, and having to register it to the developer program to obtain the api keys.
@@ -21,11 +22,16 @@ Demo login credentials:
 To run the project locally, execute the following command:
 
     python3 manage.py runserver
+    
 Since the application uses the Spotify API for login, you will need to provide your own API credentials. These can be obtained by registering an application on the Spotify Developer Dashboard.
 For testing purposes, you can use the following credentials:
 
     CLIENT_ID = '198fb21532784721aabf169a007fa26f'
-    SECRET_KEY = 'dbb064ba49814f48aadba893a75eec2d'
+    CLIENT_SECRET = 'dbb064ba49814f48aadba893a75eec2d'
+
+To end setting up the .env file, the redirect_uri has also to be defined
+
+    REDIRECT_URI=http://127.0.0.1:8000/callback
 
 ## CODE
 
