@@ -1,0 +1,44 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+:root {
+  /* Spotify Colors */
+  --color-spotify-dark: #191414;
+  --color-spotify-black: #000000;
+  --color-spotify-green: #1DB954;
+  --color-spotify-green-light: #1ED760;
+  --color-spotify-light: #FFFFFF;
+
+  /* Feature Section Colors */
+  --color-features-light: #f0fff4;
+  --color-features-dark: #ebf8ff;
+
+  /* Gradients */
+  --gradient-spotify-vertical: linear-gradient(
+    to bottom,
+    var(--color-spotify-green),
+    var(--color-spotify-dark)
+  );
+
+  --gradient-spotify-horizontal: linear-gradient(
+    to right,
+    var(--color-spotify-green),
+    var(--color-spotify-dark)
+  );
+}
+
+/* Fix white gap */
+@layer base {
+  body {
+    @apply bg-[var(--color-spotify-dark)];
+  }
+
+  main {
+    @apply pt-16;  /* Reduced from pt-20 to 4rem (16 = 4rem) */
+  }
+}
+
+/* Header transition */
+.header-transition {
+  transition: all 0.3s ease;
+}

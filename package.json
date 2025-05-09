@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.5",
+    "tailwindcss": "^4.1.5"
+  },
+  "scripts": {
+    "watch:css": "npx @tailwindcss/cli -i ./SpotyRate/static/src/styles.css -o ./SpotyRate/static/out/styles.css --watch"
+  }
+}

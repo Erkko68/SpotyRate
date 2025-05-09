@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}SpotyRate | Dashboard{% endblock %}
+
+{% block header_extra %}
+    <button onclick="initiateLogout()"
+            class="inline-flex items-center px-4 py-2 bg-[var(--color-spotify-green)] text-white rounded-full hover:bg-[var(--color-spotify-green-light)] transition-colors shadow-md">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+        </svg>
+        Logout
+    </button>
+{% endblock %}
+
+
+{% block content %}
+<div class="flex-1 flex p-4">
+    <div class="flex gap-4 flex-1 min-h-0">
+        <!-- Left Sidebar -->
+        <div class="w-64 bg-red-200 rounded-lg p-4 flex flex-col min-h-0">
+            Left
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 bg-green-200 rounded-lg p-4 min-h-0 overflow-auto">
+            Main
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="w-64 bg-blue-200 rounded-lg p-4 flex flex-col min-h-0">
+            Right
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function toggleSidebar(side) {
+        const sidebar = document.getElementById(`${side}-sidebar`);
+        const icon = document.getElementById(`${side}-icon`);
+        const isExpanded = sidebar.classList.contains('w-64');
+
+        if (isExpanded) {
+            sidebar.classList.replace('w-64', 'w-20');
+            icon.setAttribute('d', side === 'left' ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7');
+        } else {
+            sidebar.classList.replace('w-20', 'w-64');
+            icon.setAttribute('d', side === 'left' ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7');
+        }
+    }
+
+    function initiateLogout() {
+        const iframe = document.createElement('iframe');
+        iframe.style.width = '0px';
+        iframe.style.height = '0px';
+        iframe.style.border = 'none';
+        iframe.src = 'https://accounts.spotify.com/en/logout';
+        document.body.appendChild(iframe);
+
+        setTimeout(() => {
+            document.body.removeChild(iframe);
+            window.location.href = '/';
+        }, 1500);
+    }
+</script>
+{% endblock %}
