@@ -21,14 +21,14 @@ from SpotyRate import views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-
+    # Login and logout
     path("login/", views.spotify_login, name="spotify_login"),
     path("callback/", views.spotify_callback, name="spotify_callback"),
-    path("logout/", views.logout, name="logout"),
+    path("logout/", views.session_logout, name="logout"),
     path("refresh/", views.refresh_spotify_token, name="spotify_refresh"),
 
     # Pages
-    path("", views.home, name="home"),
+    path("", views.landing, name="landing"),
     path("dashboard/", views.dashboard, name="dashboard"),
     path("dashboard/song", views.dashboard_song, name="dashboard"),
     path("dashboard/playlist", views.dashboard_playlist, name="dashboard"),

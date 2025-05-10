@@ -10,23 +10,11 @@
 </head>
 
 <body class="flex flex-col min-h-screen bg-gray-400 ">
-    <header class="bg-black text-white py-4 shadow-md fixed top-0 left-0 right-0 z-50 header-transition">
-        <div class="max-w-7xl mx-auto">
-            {% block header %}
-            <div class="flex items-center space-x-4">
-                <a href="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-                    <img src="{% static 'images/svg/Primary_Logo_White_CMYK.svg' %}"
-                         alt="Spotify Logo"
-                         class="h-8 w-auto">
-                    <span class="text-xl font-bold text-white">SpotyRate</span>
-                </a>
-                <div class="flex-grow">
-
-                </div>
-                {% block header_extra %}
-                {% endblock %}
-            </div>
-            {% endblock %}
+    <header class="bg-[var(--color-spotify-black)] text-white py-4 shadow-md fixed top-0 left-0 right-0 z-50 header-transition">
+        <div class="max-w-7xl mx-auto flex items-center space-x-4">
+            {% include 'header/logo.html' %}
+            <div class="flex-1"></div>
+            {% block header_extra %}{% endblock %}
         </div>
     </header>
 

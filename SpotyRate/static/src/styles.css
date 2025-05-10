@@ -3,7 +3,8 @@
 
 :root {
   /* Spotify Colors */
-  --color-spotify-dark: #191414;
+  --color-spotify-dark-light: #222222;
+  --color-spotify-dark: #121212;
   --color-spotify-black: #000000;
   --color-spotify-green: #1DB954;
   --color-spotify-green-light: #1ED760;
@@ -29,16 +30,7 @@
 
 /* Fix white gap */
 @layer base {
-  body {
-    @apply bg-[var(--color-spotify-dark)];
-  }
-
   main {
-    @apply pt-16;  /* Reduced from pt-20 to 4rem (16 = 4rem) */
+    @apply pt-16;
   }
-}
-
-/* Header transition */
-.header-transition {
-  transition: all 0.3s ease;
 }

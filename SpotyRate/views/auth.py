@@ -4,7 +4,7 @@ import dotenv
 from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.contrib.auth import logout
-from ..models import User  # Import the updated User model
+from ..models import User
 
 # Load environment variables from .env
 dotenv.load_dotenv()
@@ -58,7 +58,7 @@ def spotify_callback(request):
     display_name = user_data.get("display_name", "Unknown")
     email = user_data.get("email", "")  # Ensure email is retrieved
     images = user_data.get("images", [])
-    profile_image_url = images[0]["url"] if images else ""  # Ensure image is retrieved
+    profile_image_url = images[0]["url"] if images else ""  # Ensure the image is retrieved
 
     # Ensure user is updated correctly
     user, created = User.objects.get_or_create(spotify_id=spotify_id)
@@ -75,11 +75,11 @@ def spotify_callback(request):
 
     return redirect("/dashboard/")
 
-def spotify_logout(request):
+def session_logout(request):
     """Logs out the user from Django and clears the session."""
     logout(request)
     request.session.flush()
-    return redirect('/logout/')
+    return JsonResponse({"OK": "Logged Out"}, status=200)
 
 def refresh_spotify_token(request):
     refresh_token = request.session.get("spotify_refresh_token")

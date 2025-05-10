@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from .auth import spotify_logout
+from django.shortcuts import render, redirect
+from .auth import session_logout
 
-def home(request):
+def landing(request):
     return render(request, "landing.html")
 
 def dashboard(request):
@@ -14,9 +14,3 @@ def dashboard_song(request):
 def dashboard_playlist(request):
     # Render the same dashboard template but with song-specific content
     return render(request, 'dashboard.html', {'active_page': 'playlist'})
-
-def logout(request):
-    # Execute logout function
-    spotify_logout(request)
-    # Render logout temporary page
-    return render(request, "logout.html")
