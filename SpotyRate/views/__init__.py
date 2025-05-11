@@ -3,3 +3,4 @@
 from .auth import *
 from .spotify import *
 from .page import *
+from .search import *

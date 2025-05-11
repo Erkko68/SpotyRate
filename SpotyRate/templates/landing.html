@@ -5,7 +5,7 @@
 
 {% block header_extra %}
     <a href="{% url 'spotify_login' %}"
-       class="inline-flex items-center px-6 py-2 bg-[var(--color-spotify-green)] text-white rounded-full hover:bg-[var(--color-spotify-green-light)])] transition-colors shadow-lg">
+       class="inline-flex items-center px-6 py-3 bg-[var(--color-spotify-green)] text-white rounded-full hover:bg-[var(--color-spotify-green-light)])] transition-colors shadow-lg">
         <span>Login with Spotify</span>
     </a>
 {% endblock %}
@@ -124,5 +124,14 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'js/scroll.js' %}"></script>
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
 {% endblock %}

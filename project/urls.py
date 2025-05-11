@@ -35,4 +35,5 @@ urlpatterns = [
 
     # Api Data Requests
     path("user/", views.get_spotify_user, name="spotify_user"),
+    path('search/', views.search, name='search'),
 ]
