@@ -37,15 +37,11 @@
 {% block scripts %}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const searchForm = document.getElementById('search-form');
     const mainContent = document.getElementById('main-content');
 
-    searchForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const query = this.querySelector('input[name="q"]').value.trim();
-      if (query) {
-        updateDashboard(query);
-      }
+    document.addEventListener('searchQuery', function (e) {
+      const query = e.detail;
+      updateDashboard(query);
     });
 
     async function updateDashboard(query) {

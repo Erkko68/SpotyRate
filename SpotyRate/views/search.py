@@ -34,7 +34,7 @@ def search(request):
         logger.info(f"Spotify Search status: {resp.status_code}")
         try:
             payload = resp.json()
-            logger.debug(f"Spotify Search payload: {payload}")
+            #logger.debug(f"Spotify Search payload: {payload}")
         except ValueError:
             logger.error("Spotify Search did not return JSON")
             payload = {}
@@ -46,7 +46,7 @@ def search(request):
             artists   = [item for item in payload.get("artists", {}).get("items", []) if item]
             playlists = [item for item in payload.get("playlists", {}).get("items", []) if item]
 
-            logger.debug(f"Filtered Spotify Search Response OK: {resp}")
+            #logger.debug(f"Filtered Spotify Search Response OK: {resp}")
         else:
             logger.error(f"Spotify Search error: {payload.get('error')}")
 

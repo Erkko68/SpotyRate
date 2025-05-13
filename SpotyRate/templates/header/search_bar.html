@@ -22,51 +22,18 @@
   </form>
 </div>
 
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const searchForm = document.getElementById('search-form');
     const searchInput = searchForm.querySelector('input[name="q"]');
-    const searchButton = document.getElementById('search-button');
-    const mainContent = document.getElementById('main-content');
 
-    function handleSearch() {
-      const query = searchInput.value.trim();
-      if (!query) return;
-
-      fetch(`/search/?q=${encodeURIComponent(query)}`, {
-        method: 'GET',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-      })
-        .then(response => {
-          if (response.ok) {
-            return response.text();
-          }
-          throw new Error('Network response was not ok');
-        })
-        .then(html => {
-          mainContent.innerHTML = html;
-          searchInput.value = '';
-        })
-        .catch(error => {
-          console.error('Error during search request:', error);
-        });
-    }
-
-    // Handle form submission
     searchForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      handleSearch();
-    });
-
-    // Handle button click
-    searchButton.addEventListener('click', handleSearch);
-
-    // Handle pressing Enter the input field
-    searchInput.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        handleSearch();
+      const query = searchInput.value.trim();
+      if (query) {
+        // Custom event to communicate with the dashboard
+        document.dispatchEvent(new CustomEvent('searchQuery', { detail: query }));
+        searchInput.value = '';
       }
     });
   });
