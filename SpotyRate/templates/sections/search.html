@@ -1,0 +1,114 @@
+{% load static %}
+
+<div class="bg-[var(--color-spotify-dark)] p-6 rounded-lg space-y-8">
+  {% if query %}
+    <h2 class="text-2xl font-bold text-white mb-6">Search Results for "{{ query }}"</h2>
+
+    {% if results.tracks or results.albums or results.artists or results.playlists %}
+
+      <!-- Songs Section -->
+      {% if results.tracks %}
+        <section class="space-y-4">
+          <h3 class="text-lg font-semibold text-white mb-2">Songs</h3>
+          <div class="divide-y divide-white/10">
+            {% for track in results.tracks %}
+              <div class="p-3 hover:bg-white/5 cursor-pointer transition-colors flex items-center">
+                <div class="flex-1">
+                  <p class="font-medium text-white">{{ track.name }}</p>
+                  <p class="text-sm text-white/60">
+                    {{ track.artists.0.name }} • {{ track.album.name }}
+                  </p>
+                </div>
+                <span class="text-white/40 text-sm">
+                  {{ track.duration_ms|time:"i:s" }}
+                </span>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+
+      <!-- Albums Section -->
+      {% if results.albums %}
+        <section class="space-y-4">
+          <h3 class="text-lg font-semibold text-white mb-2">Albums</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {% for album in results.albums %}
+              <div class="group hover:bg-white/5 p-3 rounded transition-colors">
+                <div class="relative mb-3">
+                  <img
+                    src="{{ album.images.0.url }}"
+                    alt="{{ album.name }}"
+                    class="w-full aspect-square object-cover rounded shadow-lg group-hover:brightness-90 transition"
+                  >
+                </div>
+                <p class="font-medium text-white truncate">{{ album.name }}</p>
+                <p class="text-sm text-white/60 truncate">
+                  {{ album.release_date|slice:":4" }} • {{ album.artists.0.name }}
+                </p>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+
+      <!-- Artists Section -->
+      {% if results.artists %}
+        <section class="space-y-4">
+          <h3 class="text-lg font-semibold text-white mb-2">Artists</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {% for artist in results.artists %}
+              <div class="group hover:bg-white/5 p-3 rounded transition-colors text-center">
+                <div class="relative mb-3">
+                  <div class="aspect-square w-full rounded-full overflow-hidden shadow-lg">
+                    <img
+                      src="{{ artist.images.0.url }}"
+                      alt="{{ artist.name }}"
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    >
+                  </div>
+                </div>
+                <p class="font-medium text-white truncate">{{ artist.name }}</p>
+                <p class="text-sm text-white/60">Artist</p>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+
+      <!-- Playlists Section -->
+      {% if results.playlists %}
+        <section class="space-y-4">
+          <h3 class="text-lg font-semibold text-white mb-2">Playlists</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {% for playlist in results.playlists %}
+              <div class="group hover:bg-white/5 p-3 rounded transition-colors">
+                <div class="relative mb-3">
+                  <img
+                    src="{{ playlist.images.0.url }}"
+                    alt="{{ playlist.name }}"
+                    class="w-full aspect-square object-cover rounded shadow-lg group-hover:brightness-90 transition"
+                  >
+                </div>
+                <p class="font-medium text-white truncate">{{ playlist.name }}</p>
+                <p class="text-sm text-white/60 truncate">
+                  By {{ playlist.owner.display_name }}
+                </p>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+
+    {% else %}
+      <div class="p-4 text-center text-white/70">
+        No results found for "{{ query }}".
+      </div>
+    {% endif %}
+
+  {% else %}
+    <div class="p-4 text-center text-white/70">
+      Enter a search query to see results.
+    </div>
+  {% endif %}
+</div>

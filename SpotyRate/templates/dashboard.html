@@ -19,8 +19,11 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 bg-[var(--color-spotify-dark)] rounded-lg p-4 min-h-0 overflow-auto">
-            Main
+        <div id="main-content" class="flex-1 bg-[var(--color-spotify-dark)] rounded-lg p-4 min-h-0 overflow-auto">
+            <div class="text-white">
+                <h2 class="text-2xl font-bold mb-4">Your Dashboard</h2>
+                <p>Default content goes here...</p>
+            </div>
         </div>
 
         <!-- Right Sidebar -->
@@ -29,4 +32,40 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchForm = document.getElementById('search-form');
+    const mainContent = document.getElementById('main-content');
+
+    searchForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const query = this.querySelector('input[name="q"]').value.trim();
+      if (query) {
+        updateDashboard(query);
+      }
+    });
+
+    async function updateDashboard(query) {
+      try {
+        const response = await fetch(`/search/?q=${encodeURIComponent(query)}`, {
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+
+        if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+        const html = await response.text();
+        mainContent.innerHTML = html;
+
+      } catch (error) {
+        console.error('Search error:', error);
+        mainContent.innerHTML = `<div class="p-4 text-center text-red-300">Search failed. Please try again.</div>`;
+      }
+    }
+  });
+</script>
 {% endblock %}

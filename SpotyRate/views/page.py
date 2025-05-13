@@ -5,7 +5,8 @@ def landing(request):
     return render(request, "landing.html")
 
 def dashboard(request):
-    return render(request, "dashboard.html")
+    # This will render the default dashboard page with the search bar included
+    return render(request, 'dashboard.html')
 
 def dashboard_song(request):
     # Render the same dashboard template but with song-specific content

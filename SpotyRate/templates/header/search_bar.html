@@ -1,11 +1,16 @@
 {% load static %}
 
 <div class="search-container w-full max-w-2xl mx-auto">
-  <form action="/search/" method="get"
+  <form id="search-form"
         class="flex items-center bg-[var(--color-spotify-dark)] text-white rounded-full px-4 py-2 shadow-lg hover:bg-[var(--color-spotify-dark-light)] transition-colors group focus-within:bg-[var(--color-spotify-dark-light)]">
-    <svg class="w-6 h-6 text-white mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M21 21l-4.35-4.35m2.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"/>
-    </svg>
+
+    <button type="submit"
+            class="mr-3 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
+            aria-label="Submit search">
+      <img src="{% static 'images/svg/search-icon.svg' %}"
+           alt="Search Icon"
+           class="w-6 h-6 text-white filter invert">
+    </button>
 
     <input type="search"
            name="q"
@@ -13,114 +18,56 @@
            class="bg-transparent w-full placeholder-white/70 focus:outline-none text-lg py-1"
            required
            aria-label="Search"
-           autocomplete="off"
-           x-ref="searchInput"
-           @keydown.escape="$refs.searchInput.blur()">
-
-    <button type="submit"
-            class="ml-2 p-1 rounded-full hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
-            aria-label="Submit search">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-      </svg>
-    </button>
+           autocomplete="off">
   </form>
-
-  <div id="search-results" class="hidden mt-2 bg-[var(--color-spotify-dark)] rounded-lg shadow-xl overflow-hidden"></div>
 </div>
 
+
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const searchForm = document.querySelector('.search-container form');
-  const searchInput = searchForm.querySelector('input[name="q"]');
-  const resultsContainer = document.getElementById('search-results');
-  let debounceTimer;
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchForm = document.getElementById('search-form');
+    const searchInput = searchForm.querySelector('input[name="q"]');
+    const searchButton = document.getElementById('search-button');
+    const mainContent = document.getElementById('main-content');
 
-  // Improved submit handler
-  searchForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    await performSearch(searchInput.value.trim());
-  });
+    function handleSearch() {
+      const query = searchInput.value.trim();
+      if (!query) return;
 
-  // Add debounced input for real-time search
-  searchInput.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    const query = e.target.value.trim();
-
-    if (query.length > 2) {  // Only search after 3+ characters
-      debounceTimer = setTimeout(() => {
-        performSearch(query);
-      }, 300);  // 300ms debounce
-    } else {
-      resultsContainer.classList.add('hidden');
-    }
-  });
-
-  // Better focus management
-  searchInput.addEventListener('focus', () => {
-    if (resultsContainer.innerHTML && !resultsContainer.classList.contains('hidden')) {
-      resultsContainer.classList.remove('hidden');
-    }
-  });
-
-  // Click outside to close results
-  document.addEventListener('click', (e) => {
-    if (!searchForm.contains(e.target)) {
-      resultsContainer.classList.add('hidden');
-    }
-  });
-
-  async function performSearch(query) {
-    if (!query) {
-      resultsContainer.classList.add('hidden');
-      return;
+      fetch(`/search/?q=${encodeURIComponent(query)}`, {
+        method: 'GET',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          }
+          throw new Error('Network response was not ok');
+        })
+        .then(html => {
+          mainContent.innerHTML = html;
+          searchInput.value = '';
+        })
+        .catch(error => {
+          console.error('Error during search request:', error);
+        });
     }
 
-    try {
-      // Show loading state
-      resultsContainer.innerHTML = `
-        <div class="p-4 flex items-center justify-center text-white/70">
-          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          Searching...
-        </div>`;
-      resultsContainer.classList.remove('hidden');
+    // Handle form submission
+    searchForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      handleSearch();
+    });
 
-      const response = await fetch(`/search/?q=${encodeURIComponent(query)}`);
+    // Handle button click
+    searchButton.addEventListener('click', handleSearch);
 
-      if (!response.ok) throw new Error(response.statusText);
-
-      const data = await response.json();
-
-      if (data.results && data.results.length > 0) {
-        // Update with actual results (you'll customize this)
-        resultsContainer.innerHTML = `
-          <div class="divide-y divide-white/10">
-            ${data.results.slice(0, 5).map(item => `
-              <div class="p-3 hover:bg-white/5 cursor-pointer transition-colors">
-                <p class="font-medium">${item.name}</p>
-                <p class="text-sm text-white/60">${item.type} • ${item.artist || ''}</p>
-              </div>
-            `).join('')}
-          </div>
-          <div class="p-3 text-center text-sm text-white/70 border-t border-white/10">
-            <a href="/search/?q=${encodeURIComponent(query)}" class="hover:underline">See all results</a>
-          </div>`;
-      } else {
-        resultsContainer.innerHTML = `
-          <div class="p-4 text-center text-white/70">
-            No results found for "${query}"
-          </div>`;
+    // Handle pressing Enter the input field
+    searchInput.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSearch();
       }
-    } catch (error) {
-      console.error('Search error:', error);
-      resultsContainer.innerHTML = `
-        <div class="p-4 text-center text-red-300">
-          Search failed. Please try again.
-        </div>`;
-    }
-  }
-});
+    });
+  });
 </script>

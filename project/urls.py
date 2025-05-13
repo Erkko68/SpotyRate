@@ -29,9 +29,7 @@ urlpatterns = [
 
     # Pages
     path("", views.landing, name="landing"),
-    path("dashboard/", views.dashboard, name="dashboard"),
-    path("dashboard/song", views.dashboard_song, name="dashboard"),
-    path("dashboard/playlist", views.dashboard_playlist, name="dashboard"),
+    path('dashboard/', views.dashboard, name='dashboard'),
 
     # Api Data Requests
     path("user/", views.get_spotify_user, name="spotify_user"),
