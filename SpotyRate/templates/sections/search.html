@@ -1,8 +1,7 @@
 {% load static %}
 {% load duration_filters %}
 
-<div id="search-results"
-     class="bg-[var(--color-spotify-dark)] p-6 rounded-lg max-h-[85vh] overflow-y-auto">
+<div id="search-results" class="bg-[var(--color-spotify-dark)] p-6 rounded-lg max-h-[85vh] overflow-y-auto">
   {% if query %}
     <h2 class="text-2xl font-bold text-white mb-6">
       Search Results for “{{ query }}”
@@ -10,29 +9,41 @@
 
     {% if results.tracks or results.albums or results.artists or results.playlists %}
 
-    {% if results.tracks %}
-    <section class="space-y-4">
-        <h3 class="text-lg font-semibold text-white mb-2">Songs</h3>
-        <div class="divide-y divide-white/10">
-            {% for track in results.tracks %}
-            <div class="result-item track-item p-3 hover:bg-white/5 cursor-pointer transition-colors flex items-center"
-                 data-type="track"
-                 data-id="{{ track.id }}">
-                <img src="{{ track.album.images.0.url }}" alt="Album Cover" class="w-10 h-10 mr-3">
-                <div class="flex-1">
-                    <p class="font-medium text-white">{{ track.name }}</p>
-                    <p class="text-sm text-white/60">
-                        {{ track.artists.0.name }} • {{ track.album.name }}
-                    </p>
-                </div>
-                <span class="text-white/40 text-sm">
-                    {{ track.duration_ms|format_duration }}
-                </span>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
-    {% endif %}
+      <!-- Songs Section -->
+      {% if results.tracks %}
+      <section class="space-y-4">
+          <h3 class="text-lg font-semibold text-white mb-2">Songs</h3>
+          <div class="divide-y divide-white/10">
+              {% for track in results.tracks %}
+              <div class="result-item track-item p-3 hover:bg-white/5 cursor-pointer transition-colors flex items-center"
+                   data-type="track"
+                   data-id="{{ track.id }}">
+                  <img src="{{ track.album.images.0.url }}" alt="Album Cover" class="w-10 h-10 mr-3">
+                  <div class="flex-1">
+                      <p class="font-medium text-white">{{ track.name }}</p>
+                      <p class="text-sm text-white/60">
+                          {% for artist in track.artists %}
+                          <span class="result-item artist-item cursor-pointer hover:underline"
+                                data-type="artist"
+                                data-id="{{ artist.id }}">
+                              {{ artist.name }}
+                          </span>{% if not forloop.last %}, {% endif %}
+                          {% endfor %} •
+                          <span class="result-item album-item cursor-pointer hover:underline"
+                                data-type="album"
+                                data-id="{{ track.album.id }}">
+                              {{ track.album.name }}
+                          </span>
+                      </p>
+                  </div>
+                  <span class="text-white/40 text-sm">
+                      {{ track.duration_ms|format_duration }}
+                  </span>
+              </div>
+              {% endfor %}
+          </div>
+      </section>
+      {% endif %}
 
       <!-- Albums Section -->
       {% if results.albums %}
@@ -40,17 +51,22 @@
         <h3 class="text-lg font-semibold text-white mb-2">Albums</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {% for album in results.albums %}
-          <div
-            class="result-item album-item group hover:bg-white/5 p-3 rounded transition-colors cursor-pointer"
-            data-type="album"
-            data-id="{{ album.id }}"
-          >
+          <div class="result-item album-item group hover:bg-white/5 p-3 rounded transition-colors cursor-pointer"
+               data-type="album"
+               data-id="{{ album.id }}">
             <img src="{{ album.images.0.url }}"
                  alt="{{ album.name }}"
                  class="w-full aspect-square object-cover rounded shadow-lg group-hover:brightness-90 transition mb-2">
             <p class="font-medium text-white truncate">{{ album.name }}</p>
             <p class="text-sm text-white/60 truncate">
-              {{ album.release_date|slice:":4" }} • {{ album.artists.0.name }}
+              {{ album.release_date|slice:":4" }} •
+              {% for artist in album.artists %}
+              <span class="result-item artist-item cursor-pointer hover:underline"
+                    data-type="artist"
+                    data-id="{{ artist.id }}">
+                  {{ artist.name }}
+              </span>{% if not forloop.last %}, {% endif %}
+              {% endfor %}
             </p>
           </div>
           {% endfor %}
@@ -64,11 +80,9 @@
         <h3 class="text-lg font-semibold text-white mb-2">Artists</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {% for artist in results.artists %}
-          <div
-            class="result-item artist-item group hover:bg-white/5 p-3 rounded transition-colors text-center cursor-pointer"
-            data-type="artist"
-            data-id="{{ artist.id }}"
-          >
+          <div class="result-item artist-item group hover:bg-white/5 p-3 rounded transition-colors text-center cursor-pointer"
+               data-type="artist"
+               data-id="{{ artist.id }}">
             <div class="aspect-square w-full rounded-full overflow-hidden shadow-lg mb-2">
               <img src="{{ artist.images.0.url }}"
                    alt="{{ artist.name }}"
@@ -88,17 +102,19 @@
         <h3 class="text-lg font-semibold text-white mb-2">Playlists</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {% for playlist in results.playlists %}
-          <div
-            class="result-item playlist-item group hover:bg-white/5 p-3 rounded transition-colors cursor-pointer"
-            data-type="playlist"
-            data-id="{{ playlist.id }}"
-          >
+          <div class="result-item playlist-item group hover:bg-white/5 p-3 rounded transition-colors cursor-pointer"
+               data-type="playlist"
+               data-id="{{ playlist.id }}">
             <img src="{{ playlist.images.0.url }}"
                  alt="{{ playlist.name }}"
                  class="w-full aspect-square object-cover rounded shadow-lg group-hover:brightness-90 transition mb-2">
             <p class="font-medium text-white truncate">{{ playlist.name }}</p>
             <p class="text-sm text-white/60 truncate">
-              By {{ playlist.owner.display_name }}
+              By <span class="result-item user-item cursor-pointer hover:underline"
+                         data-type="user"
+                         data-id="{{ playlist.owner.id }}">
+                   {{ playlist.owner.display_name }}
+                 </span>
             </p>
           </div>
           {% endfor %}
@@ -107,14 +123,14 @@
       {% endif %}
 
     {% else %}
-    <div class="p-4 text-center text-white/70">
-      No results found for “{{ query }}”.
-    </div>
+      <div class="p-4 text-center text-white/70">
+        No results found for “{{ query }}”.
+      </div>
     {% endif %}
 
   {% else %}
-  <div class="p-4 text-center text-white/70">
-    Enter a search query to see results.
-  </div>
+    <div class="p-4 text-center text-white/70">
+      Enter a search query to see results.
+    </div>
   {% endif %}
 </div>
