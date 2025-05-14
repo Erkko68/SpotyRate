@@ -13,11 +13,28 @@
                 <h1 class="text-4xl font-bold text-white">{{ media.name }}</h1>
                 <p class="text-sm text-white/60">
                     {% if media.type == 'playlist' %}
-                        Created by {{ media.owner.display_name }} • {{ media.tracks.total }} songs
+                        Created by
+                        <span class="result-item user-item cursor-pointer hover:underline"
+                              data-type="user"
+                              data-id="{{ media.owner.id }}">
+                            {{ media.owner.display_name }}
+                        </span> • {{ media.tracks.total }} songs
                     {% elif media.type == 'album' %}
-                        By {% for artist in media.artists %}{{ artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %} • {{ media.release_date }}
+                        By {% for artist in media.artists %}
+                            <span class="result-item artist-item cursor-pointer hover:underline"
+                                  data-type="artist"
+                                  data-id="{{ artist.id }}">
+                                {{ artist.name }}
+                            </span>{% if not forloop.last %}, {% endif %}
+                        {% endfor %} • {{ media.release_date }}
                     {% else %}
-                        By {% for artist in media.artists %}{{ artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %} • {{ media.duration_ms|format_duration }}
+                        By {% for artist in media.artists %}
+                            <span class="result-item artist-item cursor-pointer hover:underline"
+                                  data-type="artist"
+                                  data-id="{{ artist.id }}">
+                                {{ artist.name }}
+                            </span>{% if not forloop.last %}, {% endif %}
+                        {% endfor %} • {{ media.duration_ms|format_duration }}
                     {% endif %}
                 </p>
             </div>
@@ -58,8 +75,20 @@
                             <div>
                                 <p class="font-medium text-white">{{ track.name }}</p>
                                 <p class="text-sm text-white/60">
-                                    {% for artist in track.artists %}{{ artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
-                                    {% if media.type != 'track' %} • {{ track.album.name|default:media.name }}{% endif %}
+                                    {% for artist in track.artists %}
+                                        <span class="result-item artist-item cursor-pointer hover:underline"
+                                              data-type="artist"
+                                              data-id="{{ artist.id }}">
+                                            {{ artist.name }}
+                                        </span>{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if media.type != 'track' %} •
+                                        <span class="result-item album-item cursor-pointer hover:underline"
+                                              data-type="album"
+                                              data-id="{{ track.album.id }}">
+                                            {{ track.album.name|default:media.name }}
+                                        </span>
+                                    {% endif %}
                                 </p>
                             </div>
                         </div>

@@ -42,7 +42,21 @@
   document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.getElementById('main-content');
 
-    // Centralized fetch & render
+    // Single permanent event listener using event delegation
+    mainContent.addEventListener('click', function(e) {
+      const item = e.target.closest('.result-item');
+      if (!item) return;
+
+      const type = item.dataset.type;
+      const id = item.dataset.id;
+
+      console.log('Clicked:', type, id);  // Debugging
+      document.dispatchEvent(new CustomEvent('navigate', {
+        detail: { type, id }
+      }));
+    });
+
+    // Centralized fetch & render (unchanged)
     async function fetchAndRender(url) {
       try {
         const res = await fetch(url, {
@@ -51,8 +65,6 @@
         if (!res.ok) throw new Error(res.status);
         const html = await res.text();
         mainContent.innerHTML = html;
-
-        bindSearchResultsClick();
       } catch (err) {
         console.error('Fetch error:', err);
         mainContent.innerHTML = `
@@ -62,39 +74,19 @@
       }
     }
 
-    // Handle search events
+    // Existing event handlers (unchanged)
     document.addEventListener('searchQuery', e => {
       const { query } = e.detail;
       const url = `/search/?q=${encodeURIComponent(query)}`;
       fetchAndRender(url);
     });
 
-    // Handle item navigation (tracks, playlists, albums, artists)
     document.addEventListener('navigate', e => {
       const { type, id } = e.detail;
       const url = `/dashboard/media/?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
       fetchAndRender(url);
     });
 
-    // Bind click events for search results
-    function bindSearchResultsClick() {
-      const container = document.getElementById('search-results');
-      if (!container) return;
-
-      container.addEventListener('click', e => {
-        const item = e.target.closest('.result-item');
-        if (!item) return;
-
-        const type = item.dataset.type;
-        const id = item.dataset.id;
-
-        document.dispatchEvent(new CustomEvent('navigate', {
-          detail: { type, id }
-        }));
-      });
-    }
-
-    // Function to update the right sidebar content and adjust layout
     function updateRightSidebar(content) {
         // Select the right sidebar and the main content area
         const sidebar = document.getElementById("right-sidebar");
@@ -113,10 +105,6 @@
             mainContent.classList.add("col-span-12");  // Main content takes up 12 columns
         }
     }
-
-
-    // Initial binding
-    bindSearchResultsClick();
   });
 </script>
 {% endblock %}
