@@ -1,4 +1,6 @@
 .venv
 .idea
+.env
 node_modules
 debug.log
+./SpotyRate/migrations

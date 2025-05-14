@@ -36,32 +36,63 @@
 
 {% block scripts %}
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.getElementById('main-content');
 
-    document.addEventListener('searchQuery', function (e) {
-      const query = e.detail;
-      updateDashboard(query);
-    });
-
-    async function updateDashboard(query) {
+    // Centralized fetch & render
+    async function fetchAndRender(url) {
       try {
-        const response = await fetch(`/search/?q=${encodeURIComponent(query)}`, {
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-          }
+        const res = await fetch(url, {
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
         });
-
-        if (!response.ok) throw new Error(`Error: ${response.status}`);
-
-        const html = await response.text();
+        if (!res.ok) throw new Error(res.status);
+        const html = await res.text();
         mainContent.innerHTML = html;
 
-      } catch (error) {
-        console.error('Search error:', error);
-        mainContent.innerHTML = `<div class="p-4 text-center text-red-300">Search failed. Please try again.</div>`;
+        bindSearchResultsClick();
+      } catch (err) {
+        console.error('Fetch error:', err);
+        mainContent.innerHTML = `
+          <div class="p-4 text-center text-red-300">
+            Something went wrong. Please try again.
+          </div>`;
       }
     }
+
+    // Handle search events
+    document.addEventListener('searchQuery', e => {
+      const { query } = e.detail;
+      const url = `/search/?q=${encodeURIComponent(query)}`;
+      fetchAndRender(url);
+    });
+
+    // Handle item navigation (tracks, playlists, albums, artists)
+    document.addEventListener('navigate', e => {
+      const { type, id } = e.detail;
+      const url = `/dashboard/${type}/?id=${encodeURIComponent(id)}`;
+      fetchAndRender(url);
+    });
+
+    // Bind click events for search results
+    function bindSearchResultsClick() {
+      const container = document.getElementById('search-results');
+      if (!container) return;
+
+      container.addEventListener('click', e => {
+        const item = e.target.closest('.result-item');
+        if (!item) return;
+
+        const type = item.dataset.type;
+        const id = item.dataset.id;
+
+        document.dispatchEvent(new CustomEvent('navigate', {
+          detail: { type, id }
+        }));
+      });
+    }
+
+    // Initial binding
+    bindSearchResultsClick();
   });
 </script>
 {% endblock %}
