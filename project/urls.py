@@ -30,8 +30,7 @@ urlpatterns = [
     # Pages
     path("", views.landing, name="landing"),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('dashboard/playlist/', views.playlist_view, name='playlist-view'),
-    path('dashboard/track/', views.track_view, name='track-view'),
+    path('dashboard/media/', views.media_view, name='media-view'),
 
     # Api Data Requests
     path("user/", views.get_spotify_user, name="spotify_user"),
