@@ -390,8 +390,14 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
+  .min-w-\[200px\] {
+    min-width: 200px;
+  }
   .flex-1 {
     flex: 1;
+  }
+  .flex-shrink {
+    flex-shrink: 1;
   }
   .flex-shrink-0 {
     flex-shrink: 0;
@@ -404,6 +410,15 @@
   }
   .cursor-pointer {
     cursor: pointer;
+  }
+  .auto-cols-\[minmax\(150px\,1fr\)\] {
+    grid-auto-columns: minmax(150px,1fr);
+  }
+  .auto-cols-\[minmax\(200px\,1fr\)\] {
+    grid-auto-columns: minmax(200px,1fr);
+  }
+  .grid-flow-col {
+    grid-auto-flow: column;
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -503,6 +518,9 @@
   }
   .overflow-hidden {
     overflow: hidden;
+  }
+  .overflow-x-auto {
+    overflow-x: auto;
   }
   .overflow-y-auto {
     overflow-y: auto;
@@ -665,6 +683,9 @@
   }
   .pr-4 {
     padding-right: calc(var(--spacing) * 4);
+  }
+  .pb-4 {
+    padding-bottom: calc(var(--spacing) * 4);
   }
   .pl-4 {
     padding-left: calc(var(--spacing) * 4);
