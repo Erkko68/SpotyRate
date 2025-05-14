@@ -50,15 +50,28 @@ def normalize_playlist(payload: dict) -> dict:
         'name': payload.get('name'),
         'images': payload.get('images', []),
         'owner': {'display_name': payload.get('owner', {}).get('display_name')},
-        'popularity': payload.get('popularity', 0),
         'tracks': {
             'total': payload.get('tracks', {}).get('total', 0),
             'items': [
                 {
                     'added_at': item.get('added_at'),
                     'track': {
+                        # Preserve the full track structure
                         **item.get('track', {}),
-                        'artists': [artist.get('name') for artist in item.get('track', {}).get('artists', [])]
+                        # Keep full artist objects
+                        'artists': [
+                            {
+                                'id': artist.get('id'),
+                                'name': artist.get('name')
+                            }
+                            for artist in item.get('track', {}).get('artists', [])
+                        ],
+                        # Preserve a full album object
+                        'album': {
+                            'id': item.get('track', {}).get('album', {}).get('id'),
+                            'name': item.get('track', {}).get('album', {}).get('name'),
+                            'images': item.get('track', {}).get('album', {}).get('images', [])
+                        }
                     }
                 }
                 for item in payload.get('tracks', {}).get('items', [])
@@ -67,32 +80,59 @@ def normalize_playlist(payload: dict) -> dict:
         }
     }
 
-
 def normalize_track(payload: dict) -> dict:
     return {
         'type': 'track',
         'id': payload.get('id'),
         'name': payload.get('name'),
-        'images': payload.get('album', {}).get('images', []),
         'duration_ms': payload.get('duration_ms'),
         'popularity': payload.get('popularity', 0),
-        'artists': [{'name': artist.get('name')} for artist in payload.get('artists', [])],
-        'album': payload.get('album', {}),
+        'images': payload.get('album', {}).get('images', []),
+        'artists': [
+            {
+                'id': artist.get('id'),
+                'name': artist.get('name')
+            }
+            for artist in payload.get('artists', [])
+        ],
+        'album': {
+            'id': payload.get('album', {}).get('id'),
+            'name': payload.get('album', {}).get('name'),
+            'release_date': payload.get('album', {}).get('release_date'),
+            'images': payload.get('album', {}).get('images', []),
+            'artists': [
+                {
+                    'id': artist.get('id'),
+                    'name': artist.get('name')
+                }
+                for artist in payload.get('album', {}).get('artists', [])
+            ]
+        },
         'tracks': {
             'total': 1,
             'items': [
                 {
-                    'added_at': None,
                     'track': {
-                        **payload,
-                        'artists': [{'name': artist.get('name')} for artist in payload.get('artists', [])],
-                        'album': payload.get('album', {})
+                        'id': payload.get('id'),
+                        'name': payload.get('name'),
+                        'duration_ms': payload.get('duration_ms'),
+                        'artists': [
+                            {
+                                'id': artist.get('id'),
+                                'name': artist.get('name')
+                            }
+                            for artist in payload.get('artists', [])
+                        ],
+                        'album': {
+                            'id': payload.get('album', {}).get('id'),
+                            'name': payload.get('album', {}).get('name'),
+                            'images': payload.get('album', {}).get('images', [])
+                        }
                     }
                 }
             ]
         }
     }
-
 
 def normalize_album(payload: dict) -> dict:
     return {
@@ -104,15 +144,35 @@ def normalize_album(payload: dict) -> dict:
         'release_date': payload.get('release_date'),
         'total_tracks': payload.get('total_tracks'),
         'popularity': payload.get('popularity', 0),
-        'artists': [{'name': artist.get('name')} for artist in payload.get('artists', [])],
+        'artists': [
+            {
+                'id': artist.get('id'),
+                'name': artist.get('name')
+            }
+            for artist in payload.get('artists', [])
+        ],
         'tracks': {
             'total': payload.get('tracks', {}).get('total', 0),
             'items': [
                 {
-                    'added_at': None,
                     'track': {
-                        **track,
-                        'artists': [{'name': a.get('name')} for a in track.get('artists', [])],
+                        'id': track.get('id'),
+                        'name': track.get('name'),
+                        'duration_ms': track.get('duration_ms'),
+                        'artists': [
+                            {
+                                'id': artist.get('id'),
+                                'name': artist.get('name')
+                            }
+                            for artist in track.get('artists', [])
+                        ],
+                        'album': {
+                            'id': payload.get('id'),  # Reference parent album
+                            'name': payload.get('name'),
+                            'images': payload.get('images', [])
+                        },
+                        'preview_url': track.get('preview_url'),
+                        'track_number': track.get('track_number')
                     }
                 }
                 for track in payload.get('tracks', {}).get('items', [])

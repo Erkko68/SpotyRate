@@ -82,7 +82,7 @@
                                             {{ artist.name }}
                                         </span>{% if not forloop.last %}, {% endif %}
                                     {% endfor %}
-                                    {% if media.type != 'track' %} •
+                                    {% if media.type == 'playlist' %} •
                                         <span class="result-item album-item cursor-pointer hover:underline"
                                               data-type="album"
                                               data-id="{{ track.album.id }}">
