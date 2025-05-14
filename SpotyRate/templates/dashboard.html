@@ -12,27 +12,30 @@
 
 {% block content %}
 <div class="flex-1 flex px-4 p-4 bg-[var(--color-spotify-black)]">
-    <div class="flex gap-4 flex-1 min-h-0">
-        <!-- Left Sidebar -->
-        <div class="w-64 bg-[var(--color-spotify-dark)] rounded-lg p-4 flex flex-col min-h-0">
-            Left
-        </div>
-
-        <!-- Main Content -->
-        <div id="main-content" class="flex-1 bg-[var(--color-spotify-dark)] rounded-lg min-h-0 overflow-auto">
-            <div class="text-white">
-                <h2 class="text-2xl font-bold mb-4">Your Dashboard</h2>
-                <p>Default content goes here...</p>
+    <div class="gap-4 flex-1 min-h-0">
+        <div class="grid grid-cols-15 gap-4 min-h-0 h-full">
+            <!-- Left Sidebar -->
+            <div class="col-span-3 bg-[var(--color-spotify-dark)] rounded-lg p-4">
+                Left
             </div>
-        </div>
 
-        <!-- Right Sidebar -->
-        <div class="w-64 bg-[var(--color-spotify-dark)] rounded-lg p-4 flex flex-col min-h-0">
-            Right
+            <!-- Main Content -->
+            <div id="main-content" class="col-span-12 bg-[var(--color-spotify-dark)] rounded-lg overflow-auto">
+                <div class="text-white">
+                    <h2 class="text-2xl font-bold mb-4">Your Dashboard</h2>
+                    <p>Default content goes here...</p>
+                </div>
+            </div>
+
+            <!-- Right Sidebar (If no content is present, it disappears) -->
+            <div id="right-sidebar-container" class="col-span-4 bg-[var(--color-spotify-dark)] rounded-lg hidden">
+
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
+
 
 {% block scripts %}
 <script>
@@ -90,6 +93,27 @@
         }));
       });
     }
+
+    // Function to update the right sidebar content and adjust layout
+    function updateRightSidebar(content) {
+        // Select the right sidebar and the main content area
+        const sidebar = document.getElementById("right-sidebar");
+        const mainContent = document.getElementById("main-content");
+
+        // If content is provided, update the right sidebar and show it
+        if (content) {
+            sidebar.innerHTML = content;  // Inject the new content into the sidebar
+            sidebar.classList.remove("hidden");  // Show the sidebar
+            mainContent.classList.remove("col-span-12");  // Adjust main content width
+            mainContent.classList.add("col-span-8");  // Main content will take up 8 columns
+        } else {
+            // If no content, hide the sidebar
+            sidebar.classList.add("hidden");
+            mainContent.classList.remove("col-span-8");  // Adjust back to full width
+            mainContent.classList.add("col-span-12");  // Main content takes up 12 columns
+        }
+    }
+
 
     // Initial binding
     bindSearchResultsClick();
