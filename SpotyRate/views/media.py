@@ -42,7 +42,6 @@ def get_spotify_data(access_token: str, media_type: str, media_id: str) -> dict:
 
     return data
 
-
 def normalize_playlist(payload: dict) -> dict:
     return {
         'type': 'playlist',

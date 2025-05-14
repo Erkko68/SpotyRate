@@ -28,7 +28,7 @@
             </div>
 
             <!-- Right Sidebar (Dynamically present depending on AJAX requests on the function updateRightSidebar()) -->
-            <div id="right-sidebar-container" class="col-span-4 bg-[var(--color-spotify-dark)] rounded-lg hidden">
+            <div id="right-sidebar" class="col-span-4 bg-[var(--color-spotify-dark)] rounded-lg hidden">
 
             </div>
         </div>
@@ -78,12 +78,14 @@
     document.addEventListener('searchQuery', e => {
       const { query } = e.detail;
       const url = `/search/?q=${encodeURIComponent(query)}`;
+      updateRightSidebar();
       fetchAndRender(url);
     });
 
     document.addEventListener('navigate', e => {
       const { type, id } = e.detail;
       const url = `/dashboard/media/?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
+      updateRightSidebar('Right sidebar content');
       fetchAndRender(url);
     });
 
@@ -94,15 +96,15 @@
 
         // If content is provided, update the right sidebar and show it
         if (content) {
-            sidebar.innerHTML = content;  // Inject the new content into the sidebar
+            sidebar.innerHTML = content; // Inject the new content into the sidebar
             sidebar.classList.remove("hidden");  // Show the sidebar
-            mainContent.classList.remove("col-span-12");  // Adjust main content width
+            mainContent.classList.remove("col-span-12");  // Adjust the main content width
             mainContent.classList.add("col-span-8");  // Main content will take up 8 columns
         } else {
             // If no content, hide the sidebar
             sidebar.classList.add("hidden");
             mainContent.classList.remove("col-span-8");  // Adjust back to full width
-            mainContent.classList.add("col-span-12");  // Main content takes up 12 columns
+            mainContent.classList.add("col-span-12");  // The main content takes up 12 columns
         }
     }
   });
