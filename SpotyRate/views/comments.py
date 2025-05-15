@@ -107,14 +107,14 @@ def submit_comment(request):
                 media.save(update_fields=['media_type'])
 
             rating = Rating.objects.create(
-                user=request.user.spotifyuser,
+                user=request.user,
                 media=media,
                 stars=stars,
                 comment=comment
             )
 
         comment_html = render_to_string(
-            'comments/comment_item.html',
+            'comments/_comment.html',
             {'rating': rating},
             request=request
         )

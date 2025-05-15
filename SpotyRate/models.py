@@ -1,20 +1,18 @@
 from django.db import models
-from django.core.exceptions import ValidationError
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from .manager import SpotifyUserManager
 
-class SpotifyUser(models.Model):
-    spotify_id = models.CharField(max_length=100, unique=True)  # Unique Spotify user ID
-    display_name = models.CharField(max_length=255)  # Spotify display name
-    email = models.EmailField(blank=True, null=True)  # Optional email address
-    profile_image_url = models.URLField(blank=True, null=True)  # Optional profile image URL
+class SpotifyUser(AbstractBaseUser, PermissionsMixin):
+    spotify_id = models.CharField(max_length=100, unique=True)
+    display_name = models.CharField(max_length=255)
+    email = models.EmailField(blank=True, null=True)
+    profile_image_url = models.URLField(blank=True, null=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
-    def __str__(self):
-        return (
-            f"SpotifyUser("
-            f"id={self.spotify_id}, "
-            f"name='{self.display_name}', "
-            f"email='{self.email}', "
-            f")"
-        )
+    objects = SpotifyUserManager()
+
+    USERNAME_FIELD = 'spotify_id'
 
 class Media(models.Model):
     MEDIA_TYPE_CHOICES = (
