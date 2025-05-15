@@ -1,0 +1,15 @@
+{% load static %}
+
+<div class="media-container max-w-2xl mx-auto p-6 bg-[var(--color-spotify-dark)] rounded-lg flex flex-col h-[600px]"
+     data-media-id="{{ media.spotify_media_id }}"
+     data-media-type="{{ media_type }}">
+
+    <h2 class="text-2xl font-bold text-white mb-4">
+        {{ comment_count }} {{ comment_count|pluralize:"Comment,Comments" }}
+    </h2>
+
+    {% include "sections/comments/_comment_list.html" with comments=comments includes_path=includes_path %}
+
+    {% include "sections/comments/_comment_form.html" with csrf_token=csrf_token %}
+
+</div>

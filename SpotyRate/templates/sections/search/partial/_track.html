@@ -1,0 +1,27 @@
+{% load duration_filters %}
+
+<div class="result-item track-item p-3 hover:bg-white/5 cursor-pointer transition-colors flex items-center"
+     data-type="track"
+     data-id="{{ track.id }}">
+    <img src="{{ track.album.images.0.url }}" alt="Album Cover" class="w-10 h-10 mr-3">
+    <div class="flex-1">
+        <p class="font-medium text-white">{{ track.name }}</p>
+        <p class="text-sm text-white/60">
+            {% for artist in track.artists %}
+            <span class="result-item artist-item cursor-pointer hover:underline"
+                  data-type="artist"
+                  data-id="{{ artist.id }}">
+                  {{ artist.name }}
+              </span>{% if not forloop.last %}, {% endif %}
+            {% endfor %} •
+            <span class="result-item album-item cursor-pointer hover:underline"
+                  data-type="album"
+                  data-id="{{ track.album.id }}">
+                  {{ track.album.name }}
+              </span>
+        </p>
+    </div>
+    <span class="text-white/40 text-sm">
+          {{ track.duration_ms|format_duration }}
+    </span>
+</div>

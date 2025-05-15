@@ -44,7 +44,7 @@ def media_comments(request):
     logger.info(f"Found {comment_count} comments for media ID {media_id}.")
 
     # Render the comments section, even if there are no comments
-    html = render(request, 'sections/comment_section.html', {
+    html = render(request, 'sections/comments.html', {
         'comments': comments,
         'comment_count': comment_count,
     }).content.decode('utf-8')

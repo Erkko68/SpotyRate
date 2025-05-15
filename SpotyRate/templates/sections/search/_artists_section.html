@@ -1,0 +1,10 @@
+{% if artist_results %}
+<section class="space-y-4">
+    <h3 class="text-lg font-semibold text-white mb-2">Artists</h3>
+    <div class="grid grid-flow-col auto-cols-[minmax(150px,1fr)] overflow-x-auto pb-4 scrollbar-hide gap-4">
+        {% for artist_item in artist_results %}
+            {% include "sections/search/partial/_artist.html" with artist=artist_item %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}

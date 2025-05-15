@@ -1,0 +1,27 @@
+{% load static %}
+
+<div class="flex gap-6 mb-4">
+    <img src="{{ rating.user.profile_image_url|default:'https://via.placeholder.com/50/1DB954/FFFFFF?text=U' }}"
+         alt="User avatar"
+         class="w-12 h-12 rounded-full border-2 border-[var(--color-spotify-green)]">
+
+    <div class="flex-1">
+        <div class="flex flex-wrap items-center gap-3 mb-2">
+            <h3 class="font-semibold text-white">{{ rating.user.display_name }}</h3>
+
+            <div class="flex items-center gap-1 text-[var(--color-spotify-green)]">
+                {% for i in "12345" %}
+                {% if forloop.counter <= rating.stars %}
+                <span class="text-lg">★</span>
+                {% else %}
+                <span class="text-lg text-gray-400">☆</span>
+                {% endif %}
+                {% endfor %}
+                <span class="text-sm text-gray-400 ml-2">{{ rating.stars }}.0</span>
+            </div>
+
+            <span class="text-sm text-gray-400 ml-auto">{{ rating.created_at|timesince }} ago</span>
+        </div>
+        <p class="text-gray-300">{{ rating.comment }}</p>
+    </div>
+</div>

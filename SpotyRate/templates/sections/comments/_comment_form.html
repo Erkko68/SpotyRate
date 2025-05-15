@@ -1,0 +1,23 @@
+{% load static %}
+
+<div class="bg-[var(--color-spotify-dark)] border-t border-[var(--color-spotify-green)] pt-4 pb-2 mt-4">
+    <form id="add-comment-form" class="flex flex-col gap-3 px-4">
+        {% csrf_token %}
+        <textarea id="comment-text" name="comment" rows="3" placeholder="Add your comment..."
+                  class="w-full rounded-md bg-[#121212] text-white p-3 resize-none focus:outline-none focus:ring-2 focus:ring-[var(--color-spotify-green)]"
+                  required></textarea>
+
+        <div class="flex items-center justify-between">
+            <div class="stars flex gap-1 text-[var(--color-spotify-green)] cursor-pointer">
+                {% for i in "12345" %}
+                <span class="star text-2xl" data-value="{{ forloop.counter }}">☆</span>
+                {% endfor %}
+                <input type="hidden" id="star-rating" name="stars" value="0">
+            </div>
+            <button type="submit"
+                    class="bg-[var(--color-spotify-green)] text-black font-semibold px-4 py-2 rounded-md hover:bg-green-600 transition">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>

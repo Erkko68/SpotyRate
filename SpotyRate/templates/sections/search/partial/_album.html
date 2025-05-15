@@ -1,0 +1,18 @@
+<div class="result-item album-item group hover:bg-white/5 p-3 rounded transition-colors cursor-pointer"
+     data-type="album"
+     data-id="{{ album.id }}">
+    <img src="{{ album.images.0.url }}"
+         alt="{{ album.name }}"
+         class="w-full aspect-square object-cover rounded shadow-lg group-hover:brightness-90 transition mb-2">
+    <p class="font-medium text-white truncate">{{ album.name }}</p>
+    <p class="text-sm text-white/60 truncate">
+        {{ album.release_date|slice:":4" }} •
+        {% for artist in album.artists %}
+        <span class="result-item artist-item cursor-pointer hover:underline"
+              data-type="artist"
+              data-id="{{ artist.id }}">
+            {{ artist.name }}
+        </span>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+</div>
