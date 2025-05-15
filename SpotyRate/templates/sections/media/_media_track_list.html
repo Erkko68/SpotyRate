@@ -1,0 +1,26 @@
+{% load static %}
+{% load duration_filters %}
+
+{% if media_tracks_items %}
+<section class="space-y-4">
+    <div class="grid grid-cols-12 gap-4 px-3 py-2 border-b border-white/20 text-white/60 text-sm uppercase">
+        <div class="col-span-1 text-left pl-4">#</div>
+        <div class="col-span-8">Title</div>
+        <div class="col-span-3 text-right pr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="divide-y divide-white/10">
+        {% for item in media_tracks_items %}
+            {% with track=item.track %}
+                {% include "sections/media/_track_item.html" with track_item=track track_number=forloop.counter parent_media_type=main_media_type parent_media_name=main_media_name %}
+            {% endwith %}
+        {% empty %}
+            <p class="text-center text-white/60 py-4">No songs available.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}

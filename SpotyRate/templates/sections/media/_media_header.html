@@ -1,0 +1,40 @@
+{% load duration_filters %}
+
+<div class="p-6 bg-gradient-to-b from-[#333] to-[var(--color-spotify-dark)] rounded-t-lg">
+    <div class="flex items-end space-x-6">
+        <img src="{{ media.images.0.url }}" alt="Cover Art" class="w-52 h-52 rounded-lg shadow-lg">
+        <div class="space-y-2">
+            <p class="text-sm uppercase text-white/70">
+                {{ media.type|title }}
+            </p>
+            <h1 class="text-4xl font-bold text-white">{{ media.name }}</h1>
+            <p class="text-sm text-white/60">
+                {% if media.type == 'playlist' %}
+                    Created by
+                    <span class="result-item user-item cursor-pointer hover:underline"
+                          data-type="user"
+                          data-id="{{ media.owner.id }}">
+                        {{ media.owner.display_name }}
+                    </span> • {{ media.tracks.total }} songs
+                {% elif media.type == 'album' %}
+                    By {% for artist in media.artists %}
+                        <span class="result-item artist-item cursor-pointer hover:underline"
+                              data-type="artist"
+                              data-id="{{ artist.id }}">
+                            {{ artist.name }}
+                        </span>{% if not forloop.last %}, {% endif %}
+                    {% endfor %} • {{ media.release_date }}
+                {% else %}
+                    By {% for artist in media.artists %}
+                        <span class="result-item artist-item cursor-pointer hover:underline"
+                              data-type="artist"
+                              data-id="{{ artist.id }}">
+                            {{ artist.name }}
+                        </span>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% if media.duration_ms %} • {{ media.duration_ms|format_duration }}{% endif %}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>

@@ -29,84 +29,14 @@
 
             <!-- Right Sidebar (Dynamically present depending on AJAX requests on the function updateRightSidebar()) -->
             <div id="right-sidebar" class="col-span-4 bg-[var(--color-spotify-dark)] rounded-lg hidden">
-
+                {% include 'sections/comment_section.html' %}
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
 
-
 {% block scripts %}
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const mainContent = document.getElementById('main-content');
-
-    // Single permanent event listener using event delegation
-    mainContent.addEventListener('click', function(e) {
-      const item = e.target.closest('.result-item');
-      if (!item) return;
-
-      const type = item.dataset.type;
-      const id = item.dataset.id;
-
-      console.log('Clicked:', type, id);  // Debugging
-      document.dispatchEvent(new CustomEvent('navigate', {
-        detail: { type, id }
-      }));
-    });
-
-    // Centralized fetch & render (unchanged)
-    async function fetchAndRender(url) {
-      try {
-        const res = await fetch(url, {
-          headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        });
-        if (!res.ok) throw new Error(res.status);
-        const html = await res.text();
-        mainContent.innerHTML = html;
-      } catch (err) {
-        console.error('Fetch error:', err);
-        mainContent.innerHTML = `
-          <div class="p-4 text-center text-red-300">
-            Something went wrong. Please try again.
-          </div>`;
-      }
-    }
-
-    // Existing event handlers (unchanged)
-    document.addEventListener('searchQuery', e => {
-      const { query } = e.detail;
-      const url = `/search/?q=${encodeURIComponent(query)}`;
-      updateRightSidebar();
-      fetchAndRender(url);
-    });
-
-    document.addEventListener('navigate', e => {
-      const { type, id } = e.detail;
-      const url = `/dashboard/media/?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`;
-      updateRightSidebar('Right sidebar content');
-      fetchAndRender(url);
-    });
-
-    function updateRightSidebar(content) {
-        // Select the right sidebar and the main content area
-        const sidebar = document.getElementById("right-sidebar");
-        const mainContent = document.getElementById("main-content");
-
-        // If content is provided, update the right sidebar and show it
-        if (content) {
-            sidebar.innerHTML = content; // Inject the new content into the sidebar
-            sidebar.classList.remove("hidden");  // Show the sidebar
-            mainContent.classList.remove("col-span-12");  // Adjust the main content width
-            mainContent.classList.add("col-span-8");  // Main content will take up 8 columns
-        } else {
-            // If no content, hide the sidebar
-            sidebar.classList.add("hidden");
-            mainContent.classList.remove("col-span-8");  // Adjust back to full width
-            mainContent.classList.add("col-span-12");  // The main content takes up 12 columns
-        }
-    }
-  });
-</script>
+    <script src="{% static '/js/click_handler.js' %}"></script>
+    <script src="{% static '/js/comment_section.js' %}"></script>
 {% endblock %}

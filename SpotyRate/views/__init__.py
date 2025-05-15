@@ -5,3 +5,4 @@ from .spotify import *
 from .page import *
 from .search import *
 from .media import *
+from .comments import *

@@ -1,0 +1,67 @@
+{% load static %}
+<div class="media-container max-w-2xl mx-auto p-6 bg-[var(--color-spotify-dark)] rounded-lg flex flex-col h-[600px] relative"
+     data-media-id="{{ media.spotify_media_id }}"
+     data-media-type="{{ media_type }}">
+
+    <!-- Your existing media content here -->
+
+    <h2 class="text-2xl font-bold text-white mb-4">
+        {{ comment_count }} {{ comment_count|pluralize:"Comment,Comments" }}
+    </h2>
+
+    <!-- Scrollable comments container with bottom padding -->
+    <div class="flex-1 overflow-y-auto pr-2 pb-40">
+        {% for rating in comments %}
+        <div class="flex gap-6 mb-4">
+            <img src="{{ rating.user.profile_image_url|default:'https://via.placeholder.com/50/1DB954/FFFFFF?text=U' }}"
+                 alt="User avatar"
+                 class="w-12 h-12 rounded-full border-2 border-[var(--color-spotify-green)]">
+
+            <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-3 mb-2">
+                    <h3 class="font-semibold text-white">{{ rating.user.display_name }}</h3>
+
+                    <div class="flex items-center gap-1 text-[var(--color-spotify-green)]">
+                        {% for i in "12345" %}
+                        {% if forloop.counter <= rating.stars %}
+                        <span class="text-lg">★</span>
+                        {% else %}
+                        <span class="text-lg text-gray-400">☆</span>
+                        {% endif %}
+                        {% endfor %}
+                        <span class="text-sm text-gray-400 ml-2">{{ rating.stars }}.0</span>
+                    </div>
+
+                    <span class="text-sm text-gray-400 ml-auto">{{ rating.created_at|timesince }} ago</span>
+                </div>
+                <p class="text-gray-300">{{ rating.comment }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-gray-400">No comments yet.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Add Comment Section -->
+    <div class="absolute bottom-0 left-0 right-0 bg-[var(--color-spotify-dark)] border-t border-[var(--color-spotify-green)] pt-4 pb-2">
+        <form id="add-comment-form" class="flex flex-col gap-3 px-4">
+            {% csrf_token %}
+            <textarea id="comment-text" name="comment" rows="3" placeholder="Add your comment..."
+                      class="w-full rounded-md bg-[#121212] text-white p-3 resize-none focus:outline-none focus:ring-2 focus:ring-[var(--color-spotify-green)]"
+                      required></textarea>
+
+            <div class="flex items-center justify-between">
+                <div class="stars flex gap-1 text-[var(--color-spotify-green)] cursor-pointer">
+                    {% for i in "12345" %}
+                    <span class="star text-2xl" data-value="{{ forloop.counter }}">☆</span>
+                    {% endfor %}
+                    <input type="hidden" id="star-rating" name="stars" value="0">
+                </div>
+                <button type="submit"
+                        class="bg-[var(--color-spotify-green)] text-black font-semibold px-4 py-2 rounded-md hover:bg-green-600 transition">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

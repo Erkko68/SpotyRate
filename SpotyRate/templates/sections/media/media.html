@@ -1,0 +1,10 @@
+{% load static %}
+{% load duration_filters %}
+
+<div class="rounded-lg max-h-[85vh] overflow-y-auto">
+    {% include "sections/media/_media_header.html" with media=media %}
+
+    <div class="bg-[var(--color-spotify-dark)] p-6 rounded-b-lg">
+        {% include "sections/media/_media_track_list.html" with media_tracks_items=media.tracks.items main_media_type=media.type main_media_name=media.name %}
+    </div>
+</div>
