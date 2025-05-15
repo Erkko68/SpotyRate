@@ -18,7 +18,7 @@ class SpotifyUser(models.Model):
 
 class Media(models.Model):
     MEDIA_TYPE_CHOICES = (
-        ('song', 'Song'),
+        ('track', 'Track'),
         ('playlist', 'Playlist'),
         ('album', 'Album')
     )

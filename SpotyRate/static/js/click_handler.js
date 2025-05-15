@@ -1,3 +1,8 @@
+const mediaState = {
+    mediaId: null,
+    mediaType: null,
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.getElementById('main-content');
 
@@ -62,6 +67,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Fetch main content and comments concurrently
         fetchAndRender(url);
-        updateRightSidebar(id);
+        updateRightSidebar(id, type);
     });
+
+    /**
+     * Stars click handler
+     */
+    document.addEventListener('click', (e) => {
+        const star = e.target.closest('.star');
+        if (!star) return;
+
+        const selectedValue = parseInt(star.dataset.value);
+        updateStars(selectedValue);
+    });
+
+    function updateStars(selectedValue) {
+        const starElems = document.querySelectorAll('.star');
+        const starInput = document.getElementById('star-rating');
+
+        starElems.forEach(star => {
+            const starValue = parseInt(star.dataset.value);
+            const isFilled = starValue <= selectedValue;
+
+            star.textContent = isFilled ? '★' : '☆';
+            star.style.color = isFilled ? 'var(--color-spotify-green)' : 'gray';
+        });
+
+        starInput.value = selectedValue;
+    }
+
+    document.addEventListener('submit', async (e) => {
+        const form = document.getElementById("comment-form");
+        if (!form || e.target !== form) return;
+
+        e.preventDefault();
+
+        // Pull from global state
+        const {mediaId, mediaType} = mediaState;
+        console.log("Form submission with global state:", {mediaId, mediaType});
+
+        // Build FormData and include global values
+        const formData = new FormData(form);
+        formData.append('mediaId', mediaId);
+        formData.append('mediaType', mediaType);
+
+        // Optional: log FormData entries
+        for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}:`, value);
+        }
+
+        try {
+            const url = `/api/comment/submit/`;
+            const csrfToken = getCookie('csrftoken');
+            const res = await fetch(url, {
+                method: 'POST',
+                credentials: 'same-origin',            // include cookies on same-origin
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfToken,            // Django’s default header name
+                },
+                body: formData,
+            });
+
+            if (!res.ok) throw new Error(`Error: ${res.status}`);
+
+            const html = await res.text();
+            updateRightSidebar(mediaId, mediaType);
+
+            form.reset();
+            document.getElementById('star-rating').value = "0";
+            form.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('text-yellow-500');
+                star.classList.add('text-gray-400');
+            });
+        } catch (err) {
+            console.error('Comment submission error:', err);
+        }
+    });
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
 });

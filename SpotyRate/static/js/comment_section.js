@@ -1,4 +1,16 @@
 /**
+ * Update the comments section based on a given media ID and media type.
+ * If no mediaId is provided, the comments section will be hidden.
+ * @param {string|null} mediaId - The media ID for which to update comments.
+ * @param {string|null} mediaType - The media type for which to update comments.
+ */
+async function updateRightSidebar(mediaId, mediaType) {
+    const html = await fetchComments(mediaId);
+    showCommentsSection(html, mediaId, mediaType);
+}
+
+
+/**
  * Hide the comments section and reset the layout.
  */
 function hideCommentsSection() {
@@ -44,8 +56,10 @@ async function fetchComments(mediaId) {
 /**
  * Show the comments section with the provided HTML content.
  * @param {string} html - The HTML content to display in the comments section.
+ * @param {string} mediaId - The media ID to be set in the container.
+ * @param {string} mediaType - The media type to be set in the container.
  */
-function showCommentsSection(html) {
+function showCommentsSection(html, mediaId, mediaType) {
     const sidebar = document.getElementById("right-sidebar");
     const mainContent = document.getElementById("main-content");
 
@@ -53,14 +67,10 @@ function showCommentsSection(html) {
     sidebar.classList.remove("hidden");
     mainContent.classList.remove("col-span-12");
     mainContent.classList.add("col-span-8");
-}
 
-/**
- * Update the comments section based on a given media ID.
- * If no mediaId is provided, the comments section will be hidden.
- * @param {string|null} mediaId - The media ID for which to update comments.
- */
-async function updateRightSidebar(mediaId) {
-    const html = await fetchComments(mediaId);
-    showCommentsSection(html);
+    // Update global state
+    mediaState.mediaId = mediaId;
+    mediaState.mediaType = mediaType;
+
+    console.log("Global state updated:", mediaState);
 }
