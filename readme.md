@@ -86,3 +86,32 @@ To complement this, the `media.py` module handles Spotify API interactions:
 ### Ratings Linked to Media
 
 The `Rating` model links a `SpotifyUser` to a `Media` object with a star rating and optional comment. This allows users to express preferences and interact with all types of Spotify content in a unified way.
+
+## Comments System
+
+The comments functionality allows users to submit and view ratings (1–5 stars) and optional comments for any Spotify media item (track, playlist, or album). This feature enhances interactivity by enabling user-generated feedback across all types of content.
+
+### How It Works
+
+There are two main views in `comments.py` that power this feature:
+
+- **`media_comments(request)`**:  
+  This AJAX-based view handles the dynamic fetching of comments related to a given media ID. It returns a rendered HTML snippet containing all user comments, ordered from newest to oldest. It only accepts AJAX (`XMLHttpRequest`) GET requests.
+
+- **`submit_comment(request)`**:  
+  Handles comment submission via an AJAX POST request. The request must include:
+  - `mediaId` (Spotify ID of the item),
+  - `mediaType` (track, playlist, or album),
+  - `stars` (an integer from 1 to 5),
+  - `comment` (optional text).  
+  It validates the data, ensures the media object exists (or creates it if new), and links the comment to the currently logged-in user.
+
+Both views return `JsonResponse` objects to support smooth front-end integration with JavaScript, allowing for real-time updates without full page reloads.
+
+### URL Integration
+
+These views are exposed via the following routes in `urls.py`:
+
+```python
+path('api/comment/fetch/', views.media_comments, name='api-media-comments'),
+path('api/comment/submit/', views.submit_comment, name='api-submit-comments'),
