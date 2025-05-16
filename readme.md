@@ -85,6 +85,8 @@ Since all the content displayed on SpotyRate is fetched dynamically from the Spo
 
 AJAX enables asynchronous requests to Spotify’s API, allowing us to fetch and update content seamlessly. This setup lets us focus on creating flexible, generic HTML templates and CSS styling, while dynamically formatting and inserting Spotify’s data to match our UI. As a result, users enjoy real-time updates and interactive features without unnecessary page refreshes.
 
+![Comments](readme/search.png)
+
 ## Comments System
 
 The comments feature enables users to submit and view ratings (1 to 5 stars) and textual feedback on any Spotify media item — whether it’s a track, playlist, or album. This functionality boosts interactivity by fostering user-generated content and community engagement around shared musical interests.
