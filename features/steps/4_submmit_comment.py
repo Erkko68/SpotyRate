@@ -79,20 +79,23 @@ def step_impl(context, comment_text):
 
 @then('the comment should have a {stars:d}-star rating')
 def step_impl(context, stars):
-    # Wait for comment container
-    context.browser.is_element_present_by_xpath(
-        '//div[contains(@class, "flex") and contains(@class, "gap-6")]',
-        wait_time=10
-    )
+    # Wait for comment container with test-specific class
+    context.browser.is_element_present_by_css('.test-comment-container', wait_time=10)
 
-    # Get latest comment
-    comments = context.browser.find_by_xpath('//div[contains(@class, "flex") and contains(@class, "gap-6")]')
+    # Get all comment containers
+    comments = context.browser.find_by_css('.test-comment-container')
+    assert comments, "No comments found on the page"
+
+    # Get the most recent comment (last in list)
     latest_comment = comments.last
 
-    # Count filled stars using XPath text match
-    filled_stars = len(latest_comment.find_by_xpath(
-        './/div[contains(@class, "flex") and contains(@class, "items-center")]//span[text()="★"]'
-    ))
+    # Find the star rating container within the comment
+    rating_container = latest_comment.find_by_xpath(
+        './/div[contains(@class, "flex") and contains(@class, "items-center") and contains(@class, "gap-1")]'
+    ).first
+
+    # Count filled stars using text content
+    filled_stars = len(rating_container.find_by_xpath('.//span[text()="★"]'))
 
     assert filled_stars == stars, \
         f"Expected {stars} filled stars, found {filled_stars}"
