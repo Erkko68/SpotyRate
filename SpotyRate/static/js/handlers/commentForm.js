@@ -10,6 +10,13 @@ export function initCommentForm(updateRightSidebar) {
     console.log("Form submission with global state:", mediaState);
 
     const formData = new FormData(form);
+
+    const stars = formData.get('stars');
+    if (!stars || stars === "0") {
+      displayError(form,"Please select stars.");
+      return;
+    }
+
     formData.append('mediaId', mediaState.mediaId);
     formData.append('mediaType', mediaState.mediaType);
 
@@ -28,19 +35,45 @@ export function initCommentForm(updateRightSidebar) {
         },
         body: formData,
       });
-      if (!res.ok) throw new Error(`Error: ${res.status}`);
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.warn(`Error response: ${errorText}`);
+        throw new Error(`Error: ${res.status}`);
+      }
 
       await res.text(); // discard
       updateRightSidebar(mediaState.mediaId, mediaState.mediaType);
 
       form.reset();
-      document.getElementById('star-rating').value = "0";
-      form.querySelectorAll('.star').forEach(star => {
-        star.classList.remove('text-yellow-500');
-        star.classList.add('text-gray-400');
-      });
+      resetStars(form);
+      clearError(form);
+
     } catch (err) {
       console.error('Comment submission error:', err);
+      displayError('Failed to submit comment. Please try again.');
     }
   });
+
+  function resetStars(form) {
+    document.getElementById('star-rating').value = "0";
+    form.querySelectorAll('.star').forEach(star => {
+      star.classList.remove('text-yellow-500');
+      star.classList.add('text-gray-400');
+    });
+  }
+
+  function displayError(form, message) {
+    const errorElement = form.querySelector('.error-message');
+    if (!errorElement) return;
+    errorElement.textContent = message;
+    errorElement.classList.remove('hidden');
+  }
+
+  function clearError(form) {
+    const errorElement = form.querySelector('.error-message');
+    if (!errorElement) return;
+    errorElement.textContent = '';
+    errorElement.classList.add('hidden');
+  }
 }

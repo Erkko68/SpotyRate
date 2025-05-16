@@ -30,10 +30,15 @@ class Media(models.Model):
 
 class Rating(models.Model):
     user = models.ForeignKey(SpotifyUser, on_delete=models.CASCADE, related_name='ratings')
-    media = models.ForeignKey(Media, on_delete=models.CASCADE, related_name='ratings', default='song')
+    media = models.ForeignKey(Media, on_delete=models.CASCADE, related_name='ratings')
     stars = models.IntegerField()  # The star rating given by the user
     comment = models.CharField(max_length=512, blank=True, null=True)  # Optional user comment
     created_at = models.DateTimeField(auto_now_add=True)  # Record creation time
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'media'], name='unique_user_media_rating')
+        ]
 
     def save(self, *args, **kwargs):
         # Validate before saving

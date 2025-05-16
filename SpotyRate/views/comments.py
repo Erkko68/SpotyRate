@@ -49,22 +49,20 @@ def media_comments(request):
 
     return JsonResponse({'html': html})
 
-
 def submit_comment(request):
-    """Handle comment submissions via AJAX form POST with hidden inputs for media ID/type"""
+    """Handle comment submissions or updates via AJAX POST."""
     if request.method != 'POST' or request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        logger.warning("Invalid request method or missing AJAX header.")
         return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
-    # Log raw POST data keys for debugging
-    logger.debug(f"submit_comment POST keys: {list(request.POST.keys())}")
-    logger.debug(f"All POST data: {request.POST}")
+    logger.debug(f"Received POST data: {request.POST}")
 
     try:
-        # Extract everything from request.POST
-        media_id   = request.POST.get('mediaId')
+        # Extract and validate input data
+        media_id = request.POST.get('mediaId')
         media_type = request.POST.get('mediaType')
-        stars_raw  = request.POST.get('stars')
-        comment    = request.POST.get('comment', '').strip() or None
+        stars_raw = request.POST.get('stars')
+        comment = request.POST.get('comment', '').strip() or None
 
         logger.info(f"Parsed fields - mediaId: {media_id}, mediaType: {media_type}, stars: {stars_raw}, comment: {comment}")
 
@@ -77,57 +75,68 @@ def submit_comment(request):
         if not stars_raw:
             errors.append('stars is missing')
 
-        # Convert stars
+        # Validate stars
         try:
             stars = int(stars_raw)
-        except (TypeError, ValueError):
-            errors.append('stars must be an integer')
-            stars = 0
+            if stars < 1 or stars > 5:
+                raise ValueError
+        except (ValueError, TypeError):
+            errors.append('stars must be an integer between 1 and 5')
 
-        # If presence/parse errors, short-circuit
-        if errors:
-            err_msg = '; '.join(errors)
-            logger.warning(f"Validation errors: {err_msg}")
-            return JsonResponse({'status': 'error', 'message': err_msg}, status=400)
-
-        # Domain validation
-        if stars < 1 or stars > 5:
-            raise ValidationError('Stars must be between 1 and 5')
+        # Validate media type
         valid_types = dict(Media.MEDIA_TYPE_CHOICES)
         if media_type not in valid_types:
-            raise ValidationError('Invalid media type')
+            errors.append('Invalid media type')
 
+        if errors:
+            error_message = '; '.join(errors)
+            logger.warning(f"Validation errors: {error_message}")
+            return JsonResponse({'status': 'error', 'message': error_message}, status=400)
+
+        # Proceed with creating or updating the rating
         with transaction.atomic():
+            # Get or create media
             media, created = Media.objects.get_or_create(
                 spotify_media_id=media_id,
                 defaults={'media_type': media_type}
             )
+
+            # If media already exists, ensure the media type is up-to-date
             if not created and media.media_type != media_type:
                 media.media_type = media_type
                 media.save(update_fields=['media_type'])
+                logger.info(f"Updated media type for {media_id} to {media_type}")
 
-            rating = Rating.objects.create(
+            # Check if the user already has a rating for this media
+            rating, created = Rating.objects.update_or_create(
                 user=request.user,
                 media=media,
-                stars=stars,
-                comment=comment
+                defaults={
+                    'stars': stars,
+                    'comment': comment
+                }
             )
 
+            action = "created" if created else "updated"
+            logger.info(f"Successfully {action} rating {rating.id} for media {media_id}")
+
+        # Render the updated comment
         comment_html = render_to_string(
             'sections/comments/_comment.html',
             {'rating': rating},
             request=request
         )
-        logger.info(f"Successfully created rating {rating.id} for media {media_id}")
+
         return JsonResponse({
             'status': 'success',
             'html': comment_html,
-            'new_media_created': created
+            'new_media_created': created,
+            'action': action
         })
 
     except ValidationError as ve:
-        logger.warning(f"ValidationError in submit_comment: {ve}")
+        logger.warning(f"ValidationError: {ve}")
         return JsonResponse({'status': 'error', 'message': str(ve)}, status=400)
     except Exception as e:
-        logger.error(f"Comment submission error: {e}")
+        logger.exception("Exception in submit_comment")
         return JsonResponse({'status': 'error', 'message': 'Server error'}, status=500)

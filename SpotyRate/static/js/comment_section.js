@@ -1,3 +1,4 @@
+import { mediaState }    from './globals/mediaState.js';
 /**
  * Update the comments section based on a given media ID and media type.
  * If no mediaId is provided, the comments section will be hidden.
