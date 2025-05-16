@@ -107,6 +107,14 @@ There are two main views in `comments.py` that power this feature:
   It validates the data, ensures the media object exists (or creates it if new), and links the comment to the currently logged-in user.
 
 Both views return `JsonResponse` objects to support smooth front-end integration with JavaScript, allowing for real-time updates without full page reloads.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3c0abc10-3495-4d42-bd33-c6a342757c12" alt="Submit comment UI" width="400" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="https://github.com/user-attachments/assets/25ad78e0-e2c8-4506-8b56-7d4b50a91baa" alt="Rendered comment UI" width="400" />
+</p>
+
+
+
 
 ### URL Integration
 
@@ -115,3 +123,39 @@ These views are exposed via the following routes in `urls.py`:
 ```python
 path('api/comment/fetch/', views.media_comments, name='api-media-comments'),
 path('api/comment/submit/', views.submit_comment, name='api-submit-comments'),
+```
+## Template Structure and Frontend
+
+This project uses **Django template inheritance** and **TailwindCSS** to build a modular, maintainable, and responsive frontend.
+
+### Base Template
+
+All pages inherit from `base.html`, which defines a consistent layout with:
+- A persistent `<header>` for navigation and user interaction.
+- A `<main>` content block injected by child templates.
+- A customizable `<footer>` and optional script block.
+
+Static assets (like compiled Tailwind styles and custom JavaScript) are loaded via Django’s `{% static %}` tag.
+
+### Landing Page
+
+The `landing.html` template is the public-facing entry point of the application. It includes:
+- A hero section that promotes the app’s purpose and invites login.
+- Feature highlights using Tailwind's responsive grid layout.
+- A clear call-to-action to authenticate with Spotify.
+- Smooth scrolling behavior via JavaScript.
+
+### Dashboard Page
+
+The `dashboard.html` is the main authenticated user interface. It extends `base.html` and adds:
+
+- A top search bar and user profile icon.
+- A 3-column layout using Tailwind’s grid system:
+  - **Left Sidebar** (placeholder for navigation or filters).
+  - **Main Content Area** (dynamic content updated via AJAX).
+  - **Right Sidebar** (hidden by default, shown dynamically).
+
+The main content and right sidebar respond to **AJAX** events without requiring full page reloads. This improves user experience and responsiveness, particularly for features like viewing or posting comments.
+
+Custom scripts like `click_handler.js` and `comment_section.js` are used to manage these dynamic behaviors.
+
