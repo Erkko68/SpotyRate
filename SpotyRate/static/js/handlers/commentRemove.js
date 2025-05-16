@@ -3,7 +3,7 @@ import { getCookie } from '../functions/getCookie.js';
 
 export function initRemoveComment(updateRightSidebar) {
   document.addEventListener('click', async e => {
-    if (!e.target.matches('.remove-comment-btn')) return;
+    if (!e.target.matches('#remove-comment-btn')) return;
 
     // Confirm with the user
     if (!confirm('Are you sure you want to remove your rating?')) return;

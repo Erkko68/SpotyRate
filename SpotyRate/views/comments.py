@@ -17,6 +17,7 @@ def media_comments(request):
     AJAX view to fetch comments for a specific media (song, playlist, album).
     """
     logger.debug("Triggered comments fetch.")
+
     if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         logger.warning("Invalid request type received.")
         return HttpResponseBadRequest("Invalid request type.")
@@ -39,8 +40,11 @@ def media_comments(request):
     comments = Rating.objects.filter(media=media).select_related('user').order_by('-created_at') if media else []
     comment_count = comments.count() if media else 0
 
-    # Log comment count
-    logger.info(f"Found {comment_count} comments for media ID {media_id}.")
+    # Check if the current user has already commented
+    user_has_commented = comments.filter(user=request.user).exists() if media else False
+
+    # Log comment count and user comment existence
+    logger.info(f"Found {comment_count} comments for media ID {media_id}. User has commented: {user_has_commented}")
 
     # Render the comments section, even if there are no comments
     html = render(request, 'sections/comments.html', {
@@ -48,7 +52,10 @@ def media_comments(request):
         'comment_count': comment_count,
     }).content.decode('utf-8')
 
-    return JsonResponse({'html': html})
+    return JsonResponse({
+        'html': html,
+        'user_has_commented': user_has_commented
+    })
 
 def submit_comment(request):
     """Handle comment submissions or updates via AJAX POST."""
