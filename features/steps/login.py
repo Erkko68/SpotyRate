@@ -30,22 +30,32 @@ def step_impl(context):
     email_field = context.browser.find_by_css('input[data-testid="login-username"]').first
     email_field.fill(spotify_email)
 
+    time.sleep(4)
+
     # Click Continue button
     continue_button = context.browser.find_by_css('button[data-testid="login-button"]').first
     continue_button.click()
 
+    time.sleep(2)
+
     # Click "Log in with a password" button
     context.browser.is_element_present_by_text('Log in with a password', wait_time=10)
     context.browser.find_by_text('Log in with a password').first.click()
+
+    time.sleep(1)
 
     # Handle password page
     context.browser.is_element_present_by_css('input[data-testid="login-password"]', wait_time=10)
     password_field = context.browser.find_by_css('input[data-testid="login-password"]').first
     password_field.fill(spotify_password)
 
+    time.sleep(4)
+
     # Click Log In button
     login_button = context.browser.find_by_css('button[data-testid="login-button"]').first
     login_button.click()
+
+    time.sleep(1)
 
     # Handle possible consent screen
     if context.browser.is_text_present('Agree', wait_time=5):
