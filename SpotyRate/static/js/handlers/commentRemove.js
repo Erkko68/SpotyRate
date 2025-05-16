@@ -5,9 +5,6 @@ export function initRemoveComment(updateRightSidebar) {
   document.addEventListener('click', async e => {
     if (!e.target.matches('#remove-comment-btn')) return;
 
-    // Confirm with the user
-    if (!confirm('Are you sure you want to remove your rating?')) return;
-
     // Grab mediaId + mediaType from nearest wrapper (or from mediaState)
     const container = e.target.closest('.comment');
     const mediaId   = container?.dataset.mediaId   ?? mediaState.mediaId;

@@ -73,6 +73,7 @@ def step_impl(context):
 
 @then('I should see the comment "{comment_text}"')
 def step_impl(context, comment_text):
+    time.sleep(5)
     assert context.browser.is_text_present(comment_text, wait_time=10), \
         f"Comment text '{comment_text}' not found on page"
 

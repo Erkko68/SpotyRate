@@ -181,3 +181,9 @@ DEBUG=True
 ```
 
 Ensure that all configurations are properly set before deployment.
+
+### Behave Tests
+
+You can run behave tests using the following command, Spotify Login may prompt captcha verification during the initial login:
+
+`behave -D SPOTIFY_EMAIL="spotyratedemo@gmail.com" -D SPOTIFY_PASSWORD="WebProject2025"`
