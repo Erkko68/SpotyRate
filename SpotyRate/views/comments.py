@@ -1,3 +1,4 @@
+import json
 import logging
 
 from django.core.exceptions import ValidationError
@@ -139,4 +140,37 @@ def submit_comment(request):
         return JsonResponse({'status': 'error', 'message': str(ve)}, status=400)
     except Exception as e:
         logger.exception("Exception in submit_comment")
+        return JsonResponse({'status': 'error', 'message': 'Server error'}, status=500)
+
+def remove_comment(request):
+    # Only allow AJAX
+    if request.method != 'POST' or request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+
+    try:
+        payload = json.loads(request.body or "{}")
+        media_id = payload.get('mediaId')
+        media_type = payload.get('mediaType')
+
+        if not media_id or not media_type:
+            return JsonResponse({'status': 'error', 'message': 'Missing mediaId or mediaType'}, status=400)
+
+        with transaction.atomic():
+            # Try to find the media; if missing, treat as “already gone”
+            media = Media.objects.filter(spotify_media_id=media_id).first()
+            if not media:
+                # nothing to delete
+                return JsonResponse({'status': 'success'})
+
+            # Try to delete the user’s rating; ignore if it doesn’t exist
+            Rating.objects.filter(user=request.user, media=media).delete()
+
+            # Optionally clean up orphaned media
+            if not Rating.objects.filter(media=media).exists():
+                media.delete()
+
+        return JsonResponse({'status': 'success'})
+
+    except Exception as e:
+        logger.exception("Error in delete_comment")
         return JsonResponse({'status': 'error', 'message': 'Server error'}, status=500)

@@ -36,5 +36,6 @@ urlpatterns = [
     path("user/", views.get_spotify_user, name="spotify_user"),
     path('api/comment/fetch/', views.media_comments, name='api-media-comments'),
     path('api/comment/submit/', views.submit_comment, name='api-submit-comments'),
+    path('api/comment/delete/', views.remove_comment, name='api-remove-comment'),
     path('search/', views.search, name='search'),
 ]

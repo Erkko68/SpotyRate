@@ -4,6 +4,7 @@ import { initSearchQuery }   from './handlers/searchQuery.js';
 import { initNavigate }      from './handlers/navigate.js';
 import { initStarRating }    from './handlers/starRating.js';
 import { initCommentForm }   from './handlers/commentForm.js';
+import { initRemoveComment } from './handlers/commentRemove.js';
 import { updateRightSidebar, hideCommentsSection, showCommentsSection  } from './comment_section.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,4 +15,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigate(mainContent, updateRightSidebar);
   initStarRating();
   initCommentForm(updateRightSidebar);
+  initRemoveComment(updateRightSidebar);
 });

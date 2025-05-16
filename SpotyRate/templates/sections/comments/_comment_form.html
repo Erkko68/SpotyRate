@@ -13,15 +13,27 @@
               required></textarea>
 
     <div class="flex items-center justify-between">
+        <!-- Star Rating -->
         <div class="stars flex gap-1 text-gray-400 cursor-pointer">
             {% for i in "12345" %}
             <span class="star text-2xl hover:text-[var(--color-spotify-green)]" data-value="{{ forloop.counter }}">☆</span>
             {% endfor %}
             <input type="hidden" id="star-rating" name="stars" value="0">
         </div>
-        <button type="submit"
-                class="bg-[var(--color-spotify-green)] text-black font-semibold px-4 py-2 rounded-md hover:bg-[#1ED760] transition">
-            Submit
-        </button>
+
+        <!-- Remove + Submit Buttons -->
+        <div class="flex items-center gap-2">
+            <button type="button"
+                    id="remove-comment-btn"
+                    class="remove-comment-btn bg-red-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-red-700 transition"
+                    title="Remove your rating">
+                Remove
+            </button>
+
+            <button type="submit"
+                    class="bg-[var(--color-spotify-green)] text-black font-semibold px-4 py-2 rounded-md hover:bg-[#1ED760] transition">
+                Submit
+            </button>
+        </div>
     </div>
 </form>
