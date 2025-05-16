@@ -9,9 +9,9 @@
     <link rel="icon" type="image/svg+xml" href="{% static 'images/svg/Primary_Logo_White_CMYK.svg' %}">
 </head>
 
-<body class="flex flex-col min-h-screen bg-gray-400 ">
-    <header class="sticky top-0 bg-[var(--color-spotify-black)] text-white py-4 shadow-md z-50">
-        <div class="max-w-7xl mx-auto flex items-center space-x-4">
+<body class="flex flex-col h-screen bg-gray-400 ">
+    <header class="sticky bg-[var(--color-spotify-black)] text-white pt-4 z-50">
+        <div class="max-w-7xl mx-auto flex items-center">
             {% include 'header/logo.html' %}
             <div class="flex-1"></div>
             {% block header_extra %}{% endblock %}
@@ -19,7 +19,7 @@
     </header>
 
     <!-- Main content area -->
-    <main class="flex-1 flex flex-col min-h-0">
+    <main class="min-h-0 flex-col flex flex-1">
         {% block content %}{% endblock %}
     </main>
 

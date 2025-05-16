@@ -1,5 +1,3 @@
-{% load static %}
-
 <div class="flex gap-6 mb-4">
     <img src="{{ rating.user.profile_image_url|default:'https://via.placeholder.com/50/1DB954/FFFFFF?text=U' }}"
          alt="User avatar"
@@ -17,7 +15,6 @@
                 <span class="text-lg text-gray-400">☆</span>
                 {% endif %}
                 {% endfor %}
-                <span class="text-sm text-gray-400 ml-2">{{ rating.stars }}.0</span>
             </div>
 
             <span class="text-sm text-gray-400 ml-auto">{{ rating.created_at|timesince }} ago</span>
