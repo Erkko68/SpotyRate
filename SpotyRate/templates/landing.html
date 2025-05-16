@@ -12,7 +12,7 @@
 
 {% block content %}
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--color-spotify-dark)] via-[var(--color-spotify-dark)] to-[var(--color-spotify-black)] text-white">
+    <section class="min-h-screen flex-1 flex items-center justify-center bg-gradient-to-br from-[var(--color-spotify-dark)] via-[var(--color-spotify-dark)] to-[var(--color-spotify-black)] text-white">
         <div class="max-w-4xl text-center px-4">
             <h1 class="text-5xl md:text-6xl font-bold mb-6">
                 Your Social <span class="text-[var(--color-spotify-green)]">Music</span> Hub
@@ -29,7 +29,7 @@
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--color-features-light)] to-[var(--color-features-dark)]">
+    <section id="features" class="flex-1 flex items-center justify-center bg-gradient-to-br from-[var(--color-features-light)] to-[var(--color-features-dark)]">
         <div class="max-w-7xl mx-auto px-6 py-12">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <!-- Feature 1 -->
@@ -81,7 +81,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--color-spotify-green)] to-[var(--color-spotify-dark)]">
+    <section class=" min-h-screen flex-1 flex items-center justify-center bg-gradient-to-br from-[var(--color-spotify-green)] to-[var(--color-spotify-dark)]">
         <div class="max-w-4xl text-center px-4">
             <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-12 shadow-2xl">
                 <h2 class="text-4xl md:text-5xl font-bold text-white mb-8">
@@ -97,31 +97,30 @@
             </div>
         </div>
     </section>
-{% endblock %}
 
-{% block footer %}
-<footer class="bg-[var(--color-spotify-black)] text-white py-8 mt-auto">
-    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="text-left">
-            <p class="text-sm mb-4">&copy; 2025 SpotyRate. All rights reserved.</p>
-            <p class="text-sm mb-4">Contact us:
-                <a href="mailto:support@spotyrate.com"
-                   class="underline hover:text-[var(--color-spotify-green)]">
-                    support@spotyrate.com
-                </a>
-            </p>
-        </div>
-        <div class="text-right">
-            <p class="text-sm">Follow us:</p>
-            <div class="flex justify-end space-x-4 mt-4">
-                <a href="#" class="hover:text-[var(--color-spotify-green)]">Twitter</a>
-                <a href="#" class="hover:text-[var(--color-spotify-green)]">Instagram</a>
-                <a href="#" class="hover:text-[var(--color-spotify-green)]">Facebook</a>
+    <footer class=" bg-[var(--color-spotify-black)] text-white py-8 mt-auto">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="text-left">
+                <p class="text-sm mb-4">&copy; 2025 SpotyRate. All rights reserved.</p>
+                <p class="text-sm mb-4">Contact us:
+                    <a href="mailto:support@spotyrate.com"
+                       class="underline hover:text-[var(--color-spotify-green)]">
+                        support@spotyrate.com
+                    </a>
+                </p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm">Follow us:</p>
+                <div class="flex justify-end space-x-4 mt-4">
+                    <a href="#" class="hover:text-[var(--color-spotify-green)]">Twitter</a>
+                    <a href="#" class="hover:text-[var(--color-spotify-green)]">Instagram</a>
+                    <a href="#" class="hover:text-[var(--color-spotify-green)]">Facebook</a>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 {% endblock %}
+
 
 {% block scripts %}
 <script>
