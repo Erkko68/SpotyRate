@@ -1,9 +1,0 @@
-{% load static %}
-
-<div class="flex-1 overflow-y-auto pr-2">
-    {% for rating in comments %}
-        {% include "sections/comments/_comment.html" with rating=rating %}
-    {% empty %}
-        <p class="text-gray-400">No comments yet.</p>
-    {% endfor %}
-</div>

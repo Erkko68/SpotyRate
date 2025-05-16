@@ -12,15 +12,15 @@
 
 {% block content %}
 <div class="flex-1 flex px-4 p-4 bg-[var(--color-spotify-black)]">
-    <div class="gap-4 flex-1 min-h-0">
-        <div class="grid grid-cols-15 gap-4 min-h-0 h-full">
+    <div class="gap-4 flex-1">
+        <div class="grid grid-cols-15 gap-4 h-full">
             <!-- Left Sidebar -->
             <div class="col-span-3 bg-[var(--color-spotify-dark)] rounded-lg p-4">
                 Left
             </div>
 
             <!-- Main Content -->
-            <div id="main-content" class="col-span-12 bg-[var(--color-spotify-dark)] rounded-lg overflow-auto">
+            <div id="main-content" class="col-span-12 bg-[var(--color-spotify-dark)] rounded-lg ">
                 <div class="text-white">
                     <h2 class="text-2xl font-bold mb-4">Your Dashboard</h2>
                     <p>Default content goes here...</p>
@@ -37,6 +37,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static '/js/click_handler.js' %}"></script>
-    <script src="{% static '/js/comment_section.js' %}"></script>
+  <script type="module" src="{% static 'js/main.js' %}"></script>
 {% endblock %}

@@ -1,4 +1,6 @@
-<div class="bg-[var(--color-spotify-dark)] border-t border-[var(--color-spotify-green)] pt-4 pb-2 mt-4">
+{% load static %}
+
+<div class="bg-[var(--color-spotify-dark)] pt-4 pb-2 mt-4">
     <form id="comment-form" class="flex flex-col gap-3 px-4">
         {% csrf_token %}
         <textarea id="comment-text" name="comment" rows="3" placeholder="Add your comment..."

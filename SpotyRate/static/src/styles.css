@@ -27,10 +27,3 @@
     var(--color-spotify-dark)
   );
 }
-
-/* Fix white gap */
-@layer base {
-  main {
-    @apply pt-16;
-  }
-}

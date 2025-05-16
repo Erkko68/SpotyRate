@@ -114,7 +114,7 @@ def submit_comment(request):
             )
 
         comment_html = render_to_string(
-            'comments/_comment.html',
+            'sections/comments/_comment.html',
             {'rating': rating},
             request=request
         )

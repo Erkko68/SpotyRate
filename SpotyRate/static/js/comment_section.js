@@ -4,7 +4,7 @@
  * @param {string|null} mediaId - The media ID for which to update comments.
  * @param {string|null} mediaType - The media type for which to update comments.
  */
-async function updateRightSidebar(mediaId, mediaType) {
+export async function updateRightSidebar(mediaId, mediaType) {
     const html = await fetchComments(mediaId);
     showCommentsSection(html, mediaId, mediaType);
 }
@@ -13,13 +13,36 @@ async function updateRightSidebar(mediaId, mediaType) {
 /**
  * Hide the comments section and reset the layout.
  */
-function hideCommentsSection() {
+export function hideCommentsSection() {
     const sidebar = document.getElementById("right-sidebar");
     const mainContent = document.getElementById("main-content");
 
     sidebar.classList.add("hidden");
     mainContent.classList.remove("col-span-8");
     mainContent.classList.add("col-span-12");
+}
+
+
+/**
+ * Show the comments section with the provided HTML content.
+ * @param {string} html - The HTML content to display in the comments section.
+ * @param {string} mediaId - The media ID to be set in the container.
+ * @param {string} mediaType - The media type to be set in the container.
+ */
+export function showCommentsSection(html, mediaId, mediaType) {
+    const sidebar = document.getElementById("right-sidebar");
+    const mainContent = document.getElementById("main-content");
+
+    sidebar.innerHTML = html;
+    sidebar.classList.remove("hidden");
+    mainContent.classList.remove("col-span-12");
+    mainContent.classList.add("col-span-8");
+
+    // Update global state
+    mediaState.mediaId = mediaId;
+    mediaState.mediaType = mediaType;
+
+    console.log("Global state updated:", mediaState);
 }
 
 /**
@@ -50,27 +73,4 @@ async function fetchComments(mediaId) {
                 Error loading comments. Please try again.
             </div>`;
     }
-}
-
-
-/**
- * Show the comments section with the provided HTML content.
- * @param {string} html - The HTML content to display in the comments section.
- * @param {string} mediaId - The media ID to be set in the container.
- * @param {string} mediaType - The media type to be set in the container.
- */
-function showCommentsSection(html, mediaId, mediaType) {
-    const sidebar = document.getElementById("right-sidebar");
-    const mainContent = document.getElementById("main-content");
-
-    sidebar.innerHTML = html;
-    sidebar.classList.remove("hidden");
-    mainContent.classList.remove("col-span-12");
-    mainContent.classList.add("col-span-8");
-
-    // Update global state
-    mediaState.mediaId = mediaId;
-    mediaState.mediaType = mediaType;
-
-    console.log("Global state updated:", mediaState);
 }

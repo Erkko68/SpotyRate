@@ -1,13 +1,21 @@
 {% load static %}
 
-<div class="media-container max-w-2xl mx-auto p-6 bg-[var(--color-spotify-dark)] rounded-lg flex flex-col h-[600px]">
-
+<div class="media-container max-w-2xl mx-auto p-6 bg-[var(--color-spotify-dark)] rounded-lg flex flex-col">
     <h2 class="text-2xl font-bold text-white mb-4">
         {{ comment_count }} {{ comment_count|pluralize:"Comment,Comments" }}
     </h2>
 
-    {% include "sections/comments/_comment_list.html" with comments=comments includes_path=includes_path %}
+    <!-- Scrollable comment list -->
+    <div class="flex-1 overflow-y-auto pr-2">
+        {% for rating in comments %}
+            {% include "sections/comments/_comment.html" with rating=rating %}
+        {% empty %}
+            <p class="text-gray-400">No comments yet.</p>
+        {% endfor %}
+    </div>
 
-    {% include "sections/comments/_comment_form.html" with csrf_token=csrf_token %}
-
+    <!-- Sticky comment form at the bottom -->
+    <div class="sticky bottom-0 z-10 bg-[var(--color-spotify-dark)] border-t border-[var(--color-spotify-green)] pt-4 pb-2">
+        {% include "sections/comments/_comment_form.html" with csrf_token=csrf_token %}
+    </div>
 </div>

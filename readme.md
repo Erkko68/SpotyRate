@@ -6,15 +6,31 @@ SpotyRate is a web application that leverages the Spotify API to let users rate,
 
 The application adopts a Spotify-inspired theme while incorporating new sections and features to enable users to express their opinions on specific songs and playlists.
 
+---
+
 ### Key Features
 
 * **Rating:** Rate songs using a star-based rating system.
 * **Comments:** Share comments and experiences associated with each song and playlist.
 * **Friends System:** Unlike Spotify, which relies on Facebook for social connections, SpotyRate implements its own friend system to connect users directly.
 
+---
+
+## Models
+
 Below is the data model structure for the Rating and Comment features:
 
-![Data Model](img.png)
+![Data Model](readme/img.png)
+
+---
+
+## Templates (HTML)
+
+---
+
+## Comments
+
+---
 
 ## How to Use
 
