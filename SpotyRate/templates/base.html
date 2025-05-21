@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      vocab="http://schema.org/"
+      prefix="schema: http://schema.org/">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +11,8 @@
     <link rel="icon" type="image/svg+xml" href="{% static 'images/svg/Primary_Logo_White_CMYK.svg' %}">
 </head>
 
-<body class="flex flex-col h-screen bg-gray-400 ">
-    <header class="sticky bg-[var(--color-spotify-black)] text-white p-4 z-50">
+<body class="flex flex-col h-screen bg-gray-400 " typeof="schema:WebPage">
+    <header class="sticky bg-[var(--color-spotify-black)] text-white p-4 z-50" typeof="schema:WPHeader">
         <div class="max-w-7xl mx-auto flex items-center">
             {% include 'header/logo.html' %}
             <div class="flex-1"></div>
@@ -19,7 +21,7 @@
     </header>
 
     <!-- Main content area -->
-    <main class="min-h-0 flex-col flex flex-1">
+    <main class="min-h-0 flex-col flex flex-1" property="schema:mainContentOfPage">
         {% block content %}{% endblock %}
     </main>
 

@@ -1,6 +1,6 @@
 {% load static %}
 
-<div class="relative">
+<div class="relative" vocab="http://schema.org/" typeof="Person">
   <button onclick="toggleUserMenu()"
           id="user-menu-button"
           class="inline-flex items-center px-4 py-2 bg-[var(--color-spotify-dark)] text-white rounded-full hover:bg-[var(--color-spotify-dark-light)] transition-colors shadow-lg cursor-pointer">
@@ -8,7 +8,10 @@
     <img id="user-photo"
          src="{% static 'images/default-avatar.png' %}"
          alt="User Photo"
-         class="h-8 w-8 rounded-full object-cover mr-2">
+         class="h-8 w-8 rounded-full object-cover mr-2"
+         property="image"
+         typeof="ImageObject">
+    <meta property="name" content="User" />
 
     <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -18,7 +21,8 @@
   <div id="user-menu-dropdown"
        class="hidden absolute right-0 mt-2 w-40 bg-[var(--color-spotify-dark)] rounded-md shadow-lg overflow-hidden z-50">
     <a href=""
-       class="block px-4 py-2 text-sm text-gray-200 hover:bg-[var(--color-spotify-dark-light)] transition-colors">
+       class="block px-4 py-2 text-sm text-gray-200 hover:bg-[var(--color-spotify-dark-light)] transition-colors"
+       property="url">
       Profile
     </a>
     <button onclick="initiateLogout()"

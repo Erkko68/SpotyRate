@@ -1,27 +1,41 @@
 {% load static %}
 {% load duration_filters %}
 
-<div id="search-results" class="bg-[var(--color-spotify-dark)] p-6 rounded-lg">
+<div id="search-results"
+     class="bg-[var(--color-spotify-dark)] p-6 rounded-lg"
+     vocab="http://schema.org/" typeof="SearchResultsPage">
+
     {% if query %}
-    <h2 class="text-2xl font-bold text-white mb-6">
-        Search Results for “{{ query }}”
+    <h2 class="text-2xl font-bold text-white mb-6" property="headline">
+        Search Results for “<span property="query">{{ query }}</span>”
     </h2>
 
     {% if results.tracks or results.albums or results.artists or results.playlists %}
 
-        {% include "sections/search/_tracks_section.html" with track_results=results.tracks %}
-        {% include "sections/search/_albums_section.html" with album_results=results.albums %}
-        {% include "sections/search/_artists_section.html" with artist_results=results.artists %}
-        {% include "sections/search/_playlists_section.html" with playlist_results=results.playlists %}
+        <div property="mainEntity" typeof="ItemList">
+            {% include "sections/search/_tracks_section.html" with track_results=results.tracks %}
+        </div>
+
+        <div property="mainEntity" typeof="ItemList">
+            {% include "sections/search/_albums_section.html" with album_results=results.albums %}
+        </div>
+
+        <div property="mainEntity" typeof="ItemList">
+            {% include "sections/search/_artists_section.html" with artist_results=results.artists %}
+        </div>
+
+        <div property="mainEntity" typeof="ItemList">
+            {% include "sections/search/_playlists_section.html" with playlist_results=results.playlists %}
+        </div>
 
     {% else %}
-        <div class="p-4 text-center text-white/70">
-            No results found for “{{ query }}”.
+        <div class="p-4 text-center text-white/70" property="description">
+            No results found for “<span property="query">{{ query }}</span>”.
         </div>
     {% endif %}
 
     {% else %}
-    <div class="p-4 text-center text-white/70">
+    <div class="p-4 text-center text-white/70" property="description">
         Enter a search query to see results.
     </div>
     {% endif %}

@@ -1,17 +1,26 @@
 <div class="result-item album-item group hover:bg-white/5 p-3 rounded transition-colors cursor-pointer"
+     typeof="MusicAlbum"
+     resource="https://open.spotify.com/album/{{ album.id }}"
      data-type="album"
      data-id="{{ album.id }}">
+
     <img src="{{ album.images.0.url }}"
+         property="image"
          alt="{{ album.name }}"
          class="w-full aspect-square object-cover rounded shadow-lg group-hover:brightness-90 transition mb-2">
-    <p class="font-medium text-white truncate">{{ album.name }}</p>
+
+    <p class="font-medium text-white truncate" property="name">{{ album.name }}</p>
+
     <p class="text-sm text-white/60 truncate">
-        {{ album.release_date|slice:":4" }} •
+        <span property="datePublished" content="{{ album.release_date }}">{{ album.release_date|slice:":4" }}</span> •
+
         {% for artist in album.artists %}
-        <span class="result-item artist-item cursor-pointer hover:underline"
+        <span property="byArtist" typeof="MusicGroup"
+              class="result-item artist-item cursor-pointer hover:underline"
+              resource="https://open.spotify.com/artist/{{ artist.id }}"
               data-type="artist"
               data-id="{{ artist.id }}">
-            {{ artist.name }}
+            <span property="name">{{ artist.name }}</span>
         </span>{% if not forloop.last %}, {% endif %}
         {% endfor %}
     </p>

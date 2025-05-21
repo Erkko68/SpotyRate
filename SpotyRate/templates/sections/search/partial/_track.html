@@ -1,27 +1,41 @@
 {% load duration_filters %}
 
 <div class="result-item track-item p-3 hover:bg-white/5 cursor-pointer transition-colors flex items-center"
+     typeof="MusicRecording"
+     resource="https://open.spotify.com/track/{{ track.id }}"
      data-type="track"
      data-id="{{ track.id }}">
-    <img src="{{ track.album.images.0.url }}" alt="Album Cover" class="w-10 h-10 mr-3">
+
+    <img src="{{ track.album.images.0.url }}" alt="Album Cover" property="image" class="w-10 h-10 mr-3">
+
     <div class="flex-1">
-        <p class="font-medium text-white">{{ track.name }}</p>
+        <p class="font-medium text-white" property="name">{{ track.name }}</p>
         <p class="text-sm text-white/60">
             {% for artist in track.artists %}
-            <span class="result-item artist-item cursor-pointer hover:underline"
-                  data-type="artist"
-                  data-id="{{ artist.id }}">
-                  {{ artist.name }}
-              </span>{% if not forloop.last %}, {% endif %}
+                <span class="result-item artist-item cursor-pointer hover:underline"
+                      typeof="MusicGroup"
+                      property="byArtist"
+                      resource="https://open.spotify.com/artist/{{ artist.id }}"
+                      data-type="artist"
+                      data-id="{{ artist.id }}">
+                    <span property="name">{{ artist.name }}</span>
+                </span>{% if not forloop.last %}, {% endif %}
             {% endfor %} •
+
             <span class="result-item album-item cursor-pointer hover:underline"
+                  typeof="MusicAlbum"
+                  property="inAlbum"
+                  resource="https://open.spotify.com/album/{{ track.album.id }}"
                   data-type="album"
                   data-id="{{ track.album.id }}">
-                  {{ track.album.name }}
-              </span>
+                <span property="name">{{ track.album.name }}</span>
+            </span>
         </p>
     </div>
+
     <span class="text-white/40 text-sm">
-          {{ track.duration_ms|format_duration }}
+        <time property="duration" datetime="PT{{ track.duration_ms|format_iso_duration }}">
+            {{ track.duration_ms|format_duration }}
+        </time>
     </span>
 </div>

@@ -2,7 +2,8 @@
 {% load duration_filters %}
 
 {% if media_tracks_items %}
-<section class="space-y-4">
+<section class="space-y-4" property="track" typeof="ItemList">
+    <meta property="numberOfItems" content="{{ media_tracks_items|length }}">
     <div class="grid grid-cols-12 gap-4 px-3 py-2 border-b border-white/20 text-white/60 text-sm uppercase">
         <div class="col-span-1 text-left pl-4">#</div>
         <div class="col-span-8">Title</div>

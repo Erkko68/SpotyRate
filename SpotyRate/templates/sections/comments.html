@@ -1,13 +1,20 @@
-<div class="flex flex-col h-full p-6 space-y-4 rounded-lg shadow-lg">
+<div class="flex flex-col h-full p-6 space-y-4 rounded-lg shadow-lg"
+     vocab="http://schema.org/"
+     typeof="WebPage"
+     resource="#comments-section">
+
     <!-- Header Section -->
     <div class="border-b border-[var(--color-spotify-dark-light)] pb-2 mb-4">
         <h2 class="text-2xl font-bold text-white mb-2">
             {{ comment_count }} {{ comment_count|pluralize:"Comment,Comments" }}
         </h2>
+        <meta property="commentCount" content="{{ comment_count }}"/>
     </div>
 
     <!-- Comments List (Scrollable) -->
-    <div class="flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+    <div class="flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent"
+         property="comment"
+         typeof="UserComments">
         {% for rating in comments %}
             <div class="bg-[var(--color-spotify-dark)] hover:bg-[var(--color-spotify-dark-light)] p-4 rounded-lg">
                 {% include "sections/comments/_comment.html" with rating=rating %}
@@ -18,7 +25,9 @@
     </div>
 
     <!-- Fixed Comment Form at the Bottom -->
-    <div class="bg-[var(--color-spotify-dark)] p-4 rounded-t-lg border-t border-[var(--color-spotify-dark-light)]">
+    <div class="bg-[var(--color-spotify-dark)] p-4 rounded-t-lg border-t border-[var(--color-spotify-dark-light)]"
+         property="potentialAction"
+         typeof="CommentAction">
         {% include "sections/comments/_comment_form.html" with csrf_token=csrf_token %}
     </div>
 </div>

@@ -2,37 +2,48 @@
 
 <div class="p-6 bg-gradient-to-b from-[#333] to-[var(--color-spotify-dark)] rounded-t-lg">
     <div class="flex items-end space-x-6">
-        <img src="{{ media.images.0.url }}" alt="Cover Art" class="w-52 h-52 rounded-lg shadow-lg">
+        <img src="{{ media.images.0.url }}" alt="Cover Art" class="w-52 h-52 rounded-lg shadow-lg" property="image">
         <div class="space-y-2">
-            <p class="text-sm uppercase text-white/70">
+            <p class="text-sm uppercase text-white/70" property="additionalType">
                 {{ media.type|title }}
             </p>
-            <h1 class="text-4xl font-bold text-white">{{ media.name }}</h1>
+            <h1 class="text-4xl font-bold text-white" property="name">{{ media.name }}</h1>
             <p class="text-sm text-white/60">
                 {% if media.type == 'playlist' %}
                     Created by
                     <span class="result-item user-item cursor-pointer hover:underline"
                           data-type="user"
-                          data-id="{{ media.owner.id }}">
-                        {{ media.owner.display_name }}
-                    </span> • {{ media.tracks.total }} songs
+                          data-id="{{ media.owner.id }}"
+                          property="creator" typeof="Person">
+                        <span property="name">{{ media.owner.display_name }}</span>
+                    </span>
+                    • <span property="numTracks">{{ media.tracks.total }}</span> songs
                 {% elif media.type == 'album' %}
-                    By {% for artist in media.artists %}
+                    By
+                    {% for artist in media.artists %}
                         <span class="result-item artist-item cursor-pointer hover:underline"
                               data-type="artist"
-                              data-id="{{ artist.id }}">
-                            {{ artist.name }}
-                        </span>{% if not forloop.last %}, {% endif %}
-                    {% endfor %} • {{ media.release_date }}
-                {% else %}
-                    By {% for artist in media.artists %}
-                        <span class="result-item artist-item cursor-pointer hover:underline"
-                              data-type="artist"
-                              data-id="{{ artist.id }}">
-                            {{ artist.name }}
+                              data-id="{{ artist.id }}"
+                              property="byArtist" typeof="MusicGroup">
+                            <span property="name">{{ artist.name }}</span>
                         </span>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
-                    {% if media.duration_ms %} • {{ media.duration_ms|format_duration }}{% endif %}
+                    • <meta property="datePublished" content="{{ media.release_date }}">{{ media.release_date }}
+                {% else %}
+                    By
+                    {% for artist in media.artists %}
+                        <span class="result-item artist-item cursor-pointer hover:underline"
+                              data-type="artist"
+                              data-id="{{ artist.id }}"
+                              property="byArtist" typeof="MusicGroup">
+                            <span property="name">{{ artist.name }}</span>
+                        </span>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% if media.duration_ms %}
+                        • <time property="duration" datetime="PT{{ media.duration_ms|format_iso_duration }}">
+                            {{ media.duration_ms|format_duration }}
+                        </time>
+                    {% endif %}
                 {% endif %}
             </p>
         </div>

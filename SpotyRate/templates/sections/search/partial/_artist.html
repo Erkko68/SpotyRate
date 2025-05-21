@@ -1,11 +1,16 @@
 <div class="result-item artist-item group hover:bg-white/5 p-3 rounded transition-colors cursor-pointer flex-shrink-0 text-center"
+     typeof="MusicGroup"
+     resource="https://open.spotify.com/artist/{{ artist.id }}"
      data-type="artist"
      data-id="{{ artist.id }}">
+
     <div class="aspect-square w-full rounded-full overflow-hidden shadow-lg mb-2">
         <img src="{{ artist.images.0.url }}"
+             property="image"
              alt="{{ artist.name }}"
              class="w-full h-full object-cover group-hover:scale-105 transition-transform">
     </div>
-    <p class="font-medium text-white truncate">{{ artist.name }}</p>
+
+    <p class="font-medium text-white truncate" property="name">{{ artist.name }}</p>
     <p class="text-sm text-white/60">Artist</p>
 </div>

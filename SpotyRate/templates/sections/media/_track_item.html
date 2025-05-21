@@ -2,28 +2,33 @@
 
 <div class="result-item track-item p-3 hover:bg-white/5 cursor-pointer transition-colors grid grid-cols-12 gap-4 items-center"
      data-type="track"
-     data-id="{{ track_item.id }}">
+     data-id="{{ track_item.id }}"
+     typeof="MusicRecording">
+    <meta property="position" content="{{ track_number }}">
+
     <div class="col-span-1 text-left pl-4 text-white/60">{{ track_number }}</div>
 
     <div class="col-span-8 flex items-center">
         {% if parent_media_type == 'playlist' and track_item.album.images %}
-            <img src="{{ track_item.album.images.0.url }}" alt="Cover Art" class="w-10 h-10 mr-3 rounded-sm">
+            <img src="{{ track_item.album.images.0.url }}" alt="Cover Art" class="w-10 h-10 mr-3 rounded-sm" property="image">
         {% endif %}
         <div>
-            <p class="font-medium text-white">{{ track_item.name }}</p>
+            <p class="font-medium text-white" property="name">{{ track_item.name }}</p>
             <p class="text-sm text-white/60">
                 {% for artist in track_item.artists %}
                     <span class="result-item artist-item cursor-pointer hover:underline"
                           data-type="artist"
-                          data-id="{{ artist.id }}">
-                        {{ artist.name }}
+                          data-id="{{ artist.id }}"
+                          property="byArtist" typeof="MusicGroup">
+                        <span property="name">{{ artist.name }}</span>
                     </span>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
                 {% if parent_media_type != 'album' %} •
                     <span class="result-item album-item cursor-pointer hover:underline"
                           data-type="album"
-                          data-id="{{ track_item.album.id }}">
-                        {{ track_item.album.name|default:parent_media_name }}
+                          data-id="{{ track_item.album.id }}"
+                          property="inAlbum" typeof="MusicAlbum">
+                        <span property="name">{{ track_item.album.name|default:parent_media_name }}</span>
                     </span>
                 {% endif %}
             </p>
@@ -31,6 +36,8 @@
     </div>
 
     <div class="col-span-3 text-right pr-4 text-white/60 text-sm">
-        {{ track_item.duration_ms|format_duration }}
+        <time property="duration" datetime="PT{{ track_item.duration_ms|format_iso_duration }}">
+            {{ track_item.duration_ms|format_duration }}
+        </time>
     </div>
 </div>

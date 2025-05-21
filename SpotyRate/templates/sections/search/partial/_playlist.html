@@ -1,15 +1,23 @@
 <div class="result-item playlist-item group hover:bg-white/5 p-3 rounded transition-colors cursor-pointer"
+     typeof="MusicPlaylist"
+     resource="https://open.spotify.com/playlist/{{ playlist.id }}"
      data-type="playlist"
      data-id="{{ playlist.id }}">
+
     <img src="{{ playlist.images.0.url }}"
+         property="image"
          alt="{{ playlist.name }}"
          class="w-full aspect-square object-cover rounded shadow-lg group-hover:brightness-90 transition mb-2">
-    <p class="font-medium text-white truncate">{{ playlist.name }}</p>
+
+    <p class="font-medium text-white truncate" property="name">{{ playlist.name }}</p>
+
     <p class="text-sm text-white/60 truncate">
-        By <span class="result-item user-item cursor-pointer hover:underline"
+        By <span typeof="Person"
+                 property="author"
+                 class="result-item user-item cursor-pointer hover:underline"
                  data-type="user"
                  data-id="{{ playlist.owner.id }}">
-             {{ playlist.owner.display_name }}
+             <span property="name">{{ playlist.owner.display_name }}</span>
            </span>
     </p>
 </div>

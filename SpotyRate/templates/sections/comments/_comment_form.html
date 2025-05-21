@@ -1,11 +1,13 @@
 <!-- Comment Form -->
-<form id="comment-form" class="flex flex-col gap-3">
+<form id="comment-form" class="flex flex-col gap-3" vocab="http://schema.org/" typeof="CreateAction">
     {% csrf_token %}
 
     <!-- Error Message -->
     <div class="error-message text-red-500 hidden"></div>
 
-    <textarea id="comment-text" name="comment" rows="3" placeholder="Add your comment..."
+    <textarea id="comment-text" name="comment" rows="3"
+              property="reviewBody"
+              placeholder="Add your comment..."
               class="w-full rounded-md bg-[var(--color-spotify-dark)] text-white py-2 px-3 resize-none
                      focus:outline-none border border-transparent
                      hover:border-[var(--color-spotify-green)]
@@ -14,11 +16,20 @@
 
     <div class="flex items-center justify-between">
         <!-- Star Rating -->
-        <div class="stars flex gap-1 text-gray-400 cursor-pointer">
+        <div class="stars flex gap-1 text-gray-400 cursor-pointer" typeof="Rating">
+            <meta property="ratingValue" content="0" />
+            <meta property="bestRating" content="5" />
+            <meta property="worstRating" content="1" />
             {% for i in "12345" %}
-            <span class="star text-2xl hover:text-[var(--color-spotify-green)]" data-value="{{ forloop.counter }}">☆</span>
+            <span class="star text-2xl hover:text-[var(--color-spotify-green)]"
+                  data-value="{{ forloop.counter }}"
+                  property="ratingValue">☆</span>
             {% endfor %}
-            <input type="hidden" id="star-rating" name="stars" value="0">
+            <input type="hidden"
+                   id="star-rating"
+                   name="stars"
+                   value="0"
+                   property="ratingValue">
         </div>
 
         <!-- Remove + Submit Buttons -->
@@ -31,7 +42,12 @@
             </button>
 
             <button type="submit"
-                    class="bg-[var(--color-spotify-green)] text-black font-semibold px-4 py-2 rounded-md hover:bg-[#1ED760] transition">
+                    class="bg-[var(--color-spotify-green)] text-black font-semibold px-4 py-2 rounded-md hover:bg-[#1ED760] transition"
+                    property="potentialAction"
+                    typeof="Action">
+                <meta property="actionStatus" content="ActiveActionStatus" />
+                <meta property="object" content="Review" />
+                <meta property="target" content="#comment-form" />
                 Submit
             </button>
         </div>

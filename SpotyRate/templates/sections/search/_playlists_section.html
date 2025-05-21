@@ -1,9 +1,12 @@
 {% if playlist_results %}
-<section class="space-y-4">
+<section class="space-y-4" typeof="ItemList" vocab="http://schema.org/">
     <h3 class="text-lg font-semibold text-white mb-2">Playlists</h3>
+    <meta property="name" content="Playlists" />
     <div class="grid grid-flow-col auto-cols-[minmax(200px,1fr)] overflow-x-auto pb-4 scrollbar-hide gap-4">
         {% for playlist_item in playlist_results %}
-            {% include "sections/search/partial/_playlist.html" with playlist=playlist_item %}
+            <div property="itemListElement" typeof="MusicPlaylist">
+                {% include "sections/search/partial/_playlist.html" with playlist=playlist_item %}
+            </div>
         {% endfor %}
     </div>
 </section>
