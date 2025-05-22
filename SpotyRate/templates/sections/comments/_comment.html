@@ -6,35 +6,31 @@
      resource="#review-{{ rating.id }}">
 
     <!-- Item Being Reviewed (Dynamic Type) -->
-    <div property="itemReviewed" typeof="MusicRecording">
-        <meta property="name" content="Song">
-        <link property="url" href="">
+    <div property="itemReviewed" typeof="{{ item_reviewed_props.type }}">
+        <meta property="name" content="{{ item_reviewed_props.name }}">
+        <link property="url" href="{{ item_reviewed_props.url }}">
 
-        {% if media.type == 'playlist' %}
-            <meta property="numTracks" content="{{ media.tracks.total }}">
-            <div property="creator" typeof="Person">
-                <meta property="name" content="{{ media.owner.display_name }}">
-            </div>
-        {% elif media.type == 'album' %}
-            <div property="byArtist" typeof="MusicGroup">
-                {% for artist in media.artists %}
-                <meta property="name" content="{{ artist.name }}">
-                {% endfor %}
-            </div>
-            <meta property="datePublished" content="{{ media.release_date }}">
-        {% else %}
-            <div property="byArtist" typeof="MusicGroup">
-                {% for artist in media.artists %}
-                <meta property="name" content="{{ artist.name }}">
-                {% endfor %}
-            </div>
-            {% if media.album %}
-            <div property="inAlbum" typeof="MusicAlbum">
-                <meta property="name" content="{{ media.album.name }}">
-                <link property="url" href="{{ media.album.external_urls.spotify }}">
-            </div>
-            {% endif %}
-            <meta property="duration" content="PT{{ media.duration_ms|format_iso_duration }}S">
+        {% if item_reviewed_props.artist_names %}
+        <div property="{{ item_reviewed_props.artist_property }}" typeof="MusicGroup">
+            {% for artist in item_reviewed_props.artist_names %}
+            <meta property="name" content="{{ artist }}">
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if item_reviewed_props.album_name %}
+        <div property="inAlbum" typeof="MusicAlbum">
+            <meta property="name" content="{{ item_reviewed_props.album_name }}">
+            <link property="url" href="{{ item_reviewed_props.album_url }}">
+        </div>
+        {% endif %}
+
+        {% if item_reviewed_props.release_date %}
+        <meta property="datePublished" content="{{ item_reviewed_props.release_date|date:'c' }}">
+        {% endif %}
+
+        {% if item_reviewed_props.duration %}
+        <meta property="duration" content="PT{{ item_reviewed_props.duration|format_iso_duration }}S">
         {% endif %}
     </div>
 
@@ -45,14 +41,16 @@
              class="w-12 h-12 rounded-full border-2 border-[var(--color-spotify-green)]"
              property="image">
         <meta property="name" content="{{ rating.user.display_name }}">
+        <link property="url" href="{{ rating.user.profile_url|default:'#' }}">
     </div>
 
     <!-- Review Content -->
     <div class="flex-1">
-        <meta property="name" content="Review of {{ media.name }} by {{ rating.user.display_name }}">
+        <!-- Optional review title -->
+        <meta property="name" content="Review of {{ item_reviewed_props.name }} by {{ rating.user.display_name }}">
 
         <div class="flex flex-wrap items-center gap-3 mb-2">
-            <h3 class="font-semibold text-white" property="name">{{ rating.user.display_name }}</h3>
+            <h3 class="font-semibold text-white">{{ rating.user.display_name }}</h3>
 
             <div property="reviewRating" typeof="Rating"
                  class="flex items-center gap-1 text-[var(--color-spotify-green)]">
@@ -79,5 +77,8 @@
         {% if rating.updated_at != rating.created_at %}
         <meta property="dateModified" content="{{ rating.updated_at|date:'c' }}">
         {% endif %}
+
+        <!-- Optional publisher metadata -->
+        <link property="publisher" href="#Organization">
     </div>
 </div>

@@ -1,5 +1,6 @@
 import json
 import logging
+import requests
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
@@ -14,7 +15,8 @@ logger = logging.getLogger(__name__)
 
 def media_comments(request):
     """
-    AJAX view to fetch comments for a specific media (song, playlist, album).
+    AJAX view to fetch comments for a specific media (song, playlist, album)
+    and embed RDFa metadata for semantic web.
     """
     logger.debug("Triggered comments fetch.")
 
@@ -27,29 +29,76 @@ def media_comments(request):
         logger.warning("Missing media ID parameter in request.")
         return HttpResponseBadRequest("Missing media ID parameter.")
 
-    # Fetch the media object
-    logger.debug(f"Requested media with id {media_id}.")
+    # Fetch the Media object
     try:
         media = Media.objects.get(spotify_media_id=media_id)
         logger.info(f"Fetched media object for ID {media_id}: {media}")
     except Media.DoesNotExist:
         logger.warning(f"No media found for ID {media_id}. Returning empty comment section.")
-        media = None
+        return JsonResponse({
+            'html': '',
+            'user_has_commented': False
+        })
 
-    # Fetch related ratings (comments) ordered by creation date (latest first)
-    comments = Rating.objects.filter(media=media).select_related('user').order_by('-created_at') if media else []
-    comment_count = comments.count() if media else 0
+    # Prepare Spotify API request
+    access_token = request.session.get("spotify_access_token")
+    if not access_token:
+        logger.error("Spotify access token not found in session.")
+        return HttpResponseBadRequest("Spotify access token missing.")
 
-    # Check if the current user has already commented
-    user_has_commented = comments.filter(user=request.user).exists() if media else False
+    headers = {"Authorization": f"Bearer {access_token}"}
+    api_url = f"https://api.spotify.com/v1/{media.media_type}s/{media.spotify_media_id}"
 
-    # Log comment count and user comment existence
-    logger.info(f"Found {comment_count} comments for media ID {media_id}. User has commented: {user_has_commented}")
+    try:
+        response = requests.get(api_url, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+    except requests.RequestException as e:
+        logger.error(f"Failed to fetch media metadata from Spotify: {e}")
+        return HttpResponseBadRequest("Error fetching metadata from Spotify.")
 
-    # Render the comments section, even if there are no comments
+    # Construct itemReviewed_props based on media type
+    item_reviewed_props = {
+        "type": "MusicRecording" if media.media_type == "track" else
+                "MusicAlbum" if media.media_type == "album" else
+                "MusicPlaylist",
+        "name": data.get("name"),
+        "url": data.get("external_urls", {}).get("spotify"),
+        "artist_names": [],
+        "artist_property": "byArtist",
+        "album_name": None,
+        "album_url": None,
+        "release_date": None,
+        "duration": None,
+    }
+
+    if media.media_type == "track":
+        item_reviewed_props["artist_names"] = [artist["name"] for artist in data.get("artists", [])]
+        item_reviewed_props["album_name"] = data.get("album", {}).get("name")
+        item_reviewed_props["album_url"] = data.get("album", {}).get("external_urls", {}).get("spotify")
+        item_reviewed_props["release_date"] = data.get("album", {}).get("release_date")
+        item_reviewed_props["duration"] = data.get("duration_ms") // 1000 if data.get("duration_ms") else None
+
+    elif media.media_type == "album":
+        item_reviewed_props["artist_names"] = [artist["name"] for artist in data.get("artists", [])]
+        item_reviewed_props["release_date"] = data.get("release_date")
+
+    elif media.media_type == "playlist":
+        owner = data.get("owner", {}).get("display_name")
+        if owner:
+            item_reviewed_props["artist_names"] = [owner]
+            item_reviewed_props["artist_property"] = "creator"
+
+    # Fetch comments
+    comments = Rating.objects.filter(media=media).select_related('user').order_by('-created_at')
+    comment_count = comments.count()
+    user_has_commented = comments.filter(user=request.user).exists()
+
     html = render(request, 'sections/comments.html', {
         'comments': comments,
         'comment_count': comment_count,
+        'media': media,
+        'item_reviewed_props': item_reviewed_props,
     }).content.decode('utf-8')
 
     return JsonResponse({
