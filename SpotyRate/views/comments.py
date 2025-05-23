@@ -29,18 +29,22 @@ def media_comments(request):
         logger.warning("Missing media ID parameter in request.")
         return HttpResponseBadRequest("Missing media ID parameter.")
 
-    # Fetch the Media object
+    # Attempt to fetch the Media object
     try:
         media = Media.objects.get(spotify_media_id=media_id)
         logger.info(f"Fetched media object for ID {media_id}: {media}")
     except Media.DoesNotExist:
         logger.warning(f"No media found for ID {media_id}. Returning empty comment section.")
+        html = render(request, 'sections/comments.html', {
+            'comments': [],
+            'comment_count': 0,
+        }).content.decode('utf-8')
         return JsonResponse({
-            'html': '',
+            'html': html,
             'user_has_commented': False
         })
 
-    # Prepare Spotify API request
+    # Spotify API request
     access_token = request.session.get("spotify_access_token")
     if not access_token:
         logger.error("Spotify access token not found in session.")
@@ -57,7 +61,7 @@ def media_comments(request):
         logger.error(f"Failed to fetch media metadata from Spotify: {e}")
         return HttpResponseBadRequest("Error fetching metadata from Spotify.")
 
-    # Construct itemReviewed_props based on media type
+    # Construct RDFa metadata
     item_reviewed_props = {
         "type": "MusicRecording" if media.media_type == "track" else
                 "MusicAlbum" if media.media_type == "album" else
