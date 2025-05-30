@@ -90,13 +90,12 @@ def step_impl(context, stars):
     # Get the most recent comment (last in list)
     latest_comment = comments.last
 
-    # Find the star rating container within the comment
-    rating_container = latest_comment.find_by_xpath(
-        './/div[contains(@class, "flex") and contains(@class, "items-center") and contains(@class, "gap-1")]'
-    ).first
+    # Find the rating container within the comment
+    rating_container = latest_comment.find_by_css('[property="reviewRating"]').first
 
-    # Count filled stars using text content
-    filled_stars = len(rating_container.find_by_xpath('.//span[text()="★"]'))
+    # Count only the filled stars via CSS class indicating filled star color
+    filled_stars = len(rating_container.find_by_xpath(
+        './/span[contains(@class, "text-[var(--color-spotify-green)]")]'
+    ))
 
-    assert filled_stars == stars, \
-        f"Expected {stars} filled stars, found {filled_stars}"
+    assert filled_stars == stars, f"Expected {stars} filled stars, found {filled_stars}"
